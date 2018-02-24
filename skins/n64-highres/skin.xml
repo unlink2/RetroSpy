@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin name="High-Res N64" author="Forstride" type="n64">
+
+    <background name="Grey" image="pad-grey.png" />
+	<background name="Black" image="pad-black.png" />
+	<background name="Red" image="pad-red.png" />
+	<background name="Orange" image="pad-orange.png" />
+	<background name="Yellow" image="pad-yellow.png" />
+	<background name="Lime Green" image="pad-lime.png" />
+	<background name="Green" image="pad-green.png" />
+	<background name="Aqua" image="pad-aqua.png" />
+	<background name="Light Blue" image="pad-lightblue.png" />
+	<background name="Blue" image="pad-blue.png" />
+	<background name="Purple" image="pad-purple.png" />
+	<background name="Pink" image="pad-pink.png" />
+	<background name="Gold" image="pad-gold.png" />
+	<background name="Millennium 2000" image="pad-2000.png" />
+	<background name="Donkey Kong 64" image="pad-dk.png" />
+	<background name="Pokemon" image="pad-pokemon.png" />
+	<background name="Banjo-Kazooie (Custom)" image="pad-banjo.png" />
+	<background name="Chameleon Twist (Custom)" image="pad-twist.png" />
+	<background name="The Legend of Zelda (Custom)" image="pad-zelda.png" />
+
+    <button name="a" image="button-face.png" x="624" y="318" width="80" height="80" />
+    <button name="b" image="button-face.png" x="563" y="259" width="80" height="80" />
+    <button name="z" image="button-z.png" x="278" y="461" width="68" height="140" />
+    <button name="start" image="button-face.png" x="399" y="259" width="93" height="94" />
+
+    <button name="cup" image="button-face.png" x="689" y="172" width="65" height="66" />
+    <button name="cdown" image="button-face.png" x="693" y="264" width="65" height="66" />
+    <button name="cleft" image="button-face.png" x="642" y="216" width="65" height="66" />
+    <button name="cright" image="button-face.png" x="740" y="220" width="65" height="66" />
+
+    <button name="r" image="button-r.png" x="602" y="80" width="202" height="86" />
+    <button name="l" image="button-l.png" x="92" y="84" width="197" height="88" />
+
+    <button name="up" image="button-dpad.png" x="159" y="219" width="56" height="56" />
+    <button name="down" image="button-dpad.png" x="158" y="306" width="56" height="56" />
+    <button name="left" image="button-dpad.png" x="118" y="266" width="56" height="56" />
+    <button name="right" image="button-dpad.png" x="200" y="261" width="56" height="56" />
+
+    <stick xname="stick_x" yname="stick_y" image="stick.png"
+           x="406" y="429" width="80" height="80" xrange="60" yrange="60" />
+
+</skin>
