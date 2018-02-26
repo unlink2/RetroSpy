@@ -63,7 +63,6 @@ class SerialMonitor:
             if v == 0x0A:
                 secondLastSplitIndex = lastSplitIndex
                 lastSplitIndex = i
-
         if lastSplitIndex is None or secondLastSplitIndex is None:
             return s
 

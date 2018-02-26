@@ -17,3 +17,33 @@ def parseColorStr(colstr):
         raise Exception('Unable to parse color string.')
     return {'r': int(red, 16), 'g': int(green, 16), 'b': int(blue, 16),
             'a': 255}
+
+
+# converts array of at least 8 bytes to an integer
+# implementation of SignalTool
+def readByte(packet, offset):
+    val = 0
+    for i in range(0, 8):
+        if (packet[i + offset] & 0x0F) != 0:
+            val |= (1 << 7 - i)
+
+    return val
+
+
+def setBit(num, bit):
+    return num | 1 << bit
+
+
+def unsetBit(num, bit):
+    return num & ~(1 << bit)
+
+
+def toggleBit(num, bit):
+    return num ^ (1 << bit)
+
+
+def readBit(num, bit):
+    mask = 1 << bit
+    masked_n = num & mask
+    thebit = masked_n >> bit
+    return thebit

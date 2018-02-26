@@ -11,6 +11,8 @@ int digital_value;
 const int wait_for_transmission = 5; // Delay in ms in order to receive the serial data
 int value_to_write; // Holds the value that we want to write
 
+#define SEGA_SELECT 9 // sega select pin number
+
 void set_pin_mode(int pin_number, char mode) {
     /*
      * Performs a pinMode() operation depending on the value of the parameter
@@ -57,6 +59,10 @@ void digital_read(int pin_number) {
   Serial.println(digital_value); // Adds a trailing \n
 }
 
+void sega_test_read() {
+  
+}
+
 void digital_write(int pin_number, int digital_value){
     /*
      * Performs a digital write on pin_number with the digital_value
@@ -83,6 +89,9 @@ void loop() {
       case 'R': // Read operation
         if(mode == 'D') {
           digital_read(pin_number);
+        } else if(mode == 'S') {
+          // sega test mode
+          sega_test_read();
         }
         break;
       case 'W':

@@ -4,6 +4,7 @@ import tkinter as tk
 import Skin
 from serial.tools import list_ports
 
+
 class SetupWindow:
     def __init__(self):
         self.skins = Skin.loadAllSkinsFromParentFolder('skins')
@@ -24,5 +25,5 @@ class SetupWindow:
         for p in ports:
             variable.set(p) # default value
 
-        w = tk.OptionMenu(self.root, variable, *ports)
+        w = tk.OptionMenu(self.root, variable, *ports, '')
         w.pack()
