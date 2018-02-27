@@ -1,18 +1,21 @@
 # This is the main setup window of NintendoSpyMP
-
+import os
 import tkinter as tk
+from tkinter import messagebox
 import Skin
 from serial.tools import list_ports
 
-
 class SetupWindow:
     def __init__(self):
+        self.root = tk.Tk()
+
+        if not os.path.isdir('skins'):
+            tk.messagebox.showerror("Error", "Could not find skins folder!")
+            return
         self.skins = Skin.loadAllSkinsFromParentFolder('skins')
 
         for e in self.skins.pare_errors:
             print(e)
-
-        self.root = tk.Tk()
 
         self.createComPortMenu()
 
