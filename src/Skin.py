@@ -4,6 +4,7 @@ import xmltodict
 from PIL import Image
 import collections
 import util
+from InputSource import InputSource
 
 
 class ElementConfig:
@@ -99,11 +100,16 @@ class Skin:
 
         self.name = self.readStringAttr(doc['skin'], '@name')
         self.author = self.readStringAttr(doc['skin'], '@author')
-        self.type = self.readStringAttr(doc['skin'], '@type') # TODO fix this once InputSource is implemented
+
+        self.type = None
+        # find the apropriate Input Type
+        for source in InputSource.ALL:
+            if source.type_tag == self.readStringAttr(doc['skin'], '@type'):
+                self.type = source
 
         if self.type is None:
             raise Exception('Illegal value specified for skin \
-            attribute\'type\'.')
+            attribute\'type\'. ' + skinpath)
 
         backgrounds = self.getAllElements(doc['skin'], 'background', True)
 

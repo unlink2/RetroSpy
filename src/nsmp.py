@@ -6,7 +6,7 @@
 # possible.
 # All Skins and Controllers (barring XInput?) will be supproted.
 
-from SerialMonitor import SerialMonitor, SerialMonitorCallback
+from SerialMonitor import SerialMonitor
 from SetupWindow import SetupWindow
 from DebugWindow import DebugWindow
 from serial.tools import list_ports

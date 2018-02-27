@@ -1,13 +1,5 @@
 import serial
-
-
-class SerialMonitorCallback:
-    def onSuccess(self, data):
-        print(data)
-        pass
-
-    def onError(self, data):
-        pass
+from axel import Event
 
 # This class models the connection to an arduino
 #
@@ -25,12 +17,11 @@ class SerialMonitorCallback:
 
 
 class SerialMonitor:
-    def __init__(self, callback=None, serial_port='/dev/ttyACM0', baud_rate=115200,
+    def __init__(self, serial_port='/dev/ttyACM0', baud_rate=115200,
                  timer_ms=30):
         self.baud_rate = baud_rate
         self.serial_port = serial_port
         self.timer_ms = timer_ms
-        self.callback = callback
 
         # array of bytes
         self._localBuffer = []
@@ -38,6 +29,9 @@ class SerialMonitor:
         #  establish connection
         self._datPort = serial.Serial(serial_port, baud_rate)
         self._datPort.timeout = timer_ms
+
+        self.packet_recv = Event()
+        self.disconnected = Event()
 
     def start(self):
         pass
@@ -66,9 +60,8 @@ class SerialMonitor:
         if lastSplitIndex is None or secondLastSplitIndex is None:
             return s
 
-        if self.callback is not None:
-            self.callback.onSuccess(
-                self._localBuffer[secondLastSplitIndex + 1:lastSplitIndex])
+        # fire event
+        self.packet_recv(self._localBuffer[secondLastSplitIndex + 1:lastSplitIndex])
 
         del self._localBuffer[0:lastSplitIndex + 1]
 
