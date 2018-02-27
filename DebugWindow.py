@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 import SerialMonitor
 import time
 from MegaDrive import MegaDrive
+from InputSource import InputSource
 
 # This is the experimental mega drive input view window.
 # This will move to the normal view window once it is implemented.
@@ -12,9 +13,9 @@ from MegaDrive import MegaDrive
 
 class DebugWindow:
     def __init__(self, comport, ui=1, ports_to_read=9):
-        self.serial = SerialMonitor.SerialMonitor(serial_port=comport, baud_rate=115200)
-        self.serial.packet_recv += self.on_packet
-        self.md = MegaDrive()
+        self.inputsource = InputSource.makeInputSource('megadrive')
+        self.inputsource.makeControllerReader(comport=comport)
+        self.inputsource.controllerreader.controllerstate += self.on_state
 
         self.last_state = None
 
@@ -77,7 +78,7 @@ class DebugWindow:
         self.root.mainloop()
 
     def update(self):
-        self.serial.serial_read()
+        self.inputsource.controllerreader.update()
 
         if self.last_state is not None:
             # up
@@ -130,5 +131,5 @@ class DebugWindow:
 
         self.root.after(self.update_interval, self.update)
 
-    def on_packet(self, data, *args, **kwargs):
-        self.last_state = self.md.readFromPacket(data)
+    def on_state(self, sender, newstate, *args, **kwargs):
+        self.last_state = newstate

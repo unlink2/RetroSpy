@@ -6,7 +6,7 @@
 
 // ---------- Uncomment one of these options to select operation mode --------------
 //#define MODE_GC
-//#define MODE_N64
+#define MODE_N64
 //#define MODE_SNES
 //#define MODE_NES
 // Bridge one of the analog GND to the right analog IN to enable your selected mode

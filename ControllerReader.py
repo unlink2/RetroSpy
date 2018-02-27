@@ -8,3 +8,6 @@ class ControllerReader:
 
     def finish(self):
         pass
+
+    def update(self):
+        pass

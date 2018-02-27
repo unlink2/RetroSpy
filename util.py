@@ -1,6 +1,8 @@
 
 
-def parseColorStr(colstr):
+def parseColorStr(colstr, return_hex=True):
+    if return_hex:
+        return '#' + colstr
     red = ""
     green = ""
     blue = ""
@@ -25,8 +27,7 @@ def readByte(packet, offset):
     val = 0
     for i in range(0, 8):
         if (packet[i + offset] & 0x0F) != 0:
-            val |= (1 << 7 - i)
-
+            val = val | (1 << 7 - i)
     return val
 
 

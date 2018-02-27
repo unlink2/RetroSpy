@@ -5,6 +5,9 @@ from axel import Event
 
 class SerialControllerReader(ControllerReader):
     def __init__(self, portname, packet_parser):
+        self.controllerstate = Event()
+        self.controllerdisconnected = Event()
+
         self.packet_parser = packet_parser
 
         self.serial = SerialMonitor(serial_port=portname)
@@ -22,3 +25,6 @@ class SerialControllerReader(ControllerReader):
 
     def finish(self):
         self.serial.stop()
+
+    def update(self):
+        self.serial.serial_read()

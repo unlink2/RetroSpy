@@ -3,34 +3,37 @@ from util import readByte
 
 
 class GameCube:
-    def __init__(self):
-        self.PACKET_SIZE = 64
+    @staticmethod
+    def readStick(input):
+        return float((input - 128)) / 128.0
 
-        self.BUTTONS = [None, None, None, 'start', 'y', 'x', 'b', 'a', None,
-                        'l', 'r', 'z', 'up', 'down', 'right', 'left']
+    @staticmethod
+    def readTrigger(input):
+        return input / 256.0
 
-        def readStick(input):
-            return (input - 128) / 128
+    @staticmethod
+    def readFromPacket(packet):
+        if(len(packet) < GameCube.PACKET_SIZE):
+            return None
+        state = ControllerStateBuilder()
 
-        def readTrigger(input):
-            return input / 256
+        for i in range(0, len(GameCube.BUTTONS)):
+            if GameCube.BUTTONS[i] is None:
+                continue
 
-        def readFromPacket(packet):
-            if(len(packet) < self.PACKET_SIZE):
-                return None
+            state.setButton(GameCube.BUTTONS[i], packet[i] != 0x00)
 
-            state = ControllerStateBuilder()
+        state.setAnalog('lstick_x', GameCube.readStick(readByte(packet, len(GameCube.BUTTONS))))
+        state.setAnalog('lstick_y', GameCube.readStick(readByte(packet, len(GameCube.BUTTONS) + 8)))
+        state.setAnalog('cstick_x', GameCube.readStick(readByte(packet, len(GameCube.BUTTONS) + 16)))
+        state.setAnalog('cstick_y', GameCube.readStick(readByte(packet, len(GameCube.BUTTONS) + 24)))
+        state.setAnalog('trig_l', GameCube.readTrigger(readByte(packet, len(GameCube.BUTTONS) + 32)))
+        state.setAnalog('trig_r', GameCube.readTrigger(readByte(packet, len(GameCube.BUTTONS) + 40)))
 
-            for i in range(0, len(self.BUTTONS)):
-                if self.BUTTONS[i] is None:
-                    continue
+        return state.build()
 
-                state.setButton(self.BUTTONS[i], packet[i] != 0x00)
 
-            state.setAnalog('lstick_x', self.readStick(readByte(packet, len(self.BUTTONS))))
-            state.setAnalog('lstick_y', self.readStick(readByte(packet, len(self.BUTTONS + 8))))
-            state.setAnalog('cstick_x', self.readStick(readByte(packet, len(self.BUTTONS + 16))))
-            state.setAnalog('cstick_y', self.readStick(readByte(packet, len(self.BUTTONS + 24))))
-            state.setAnalog('trig_l', self.readStick(readByte(packet, len(self.BUTTONS + 32))))
-            state.setAnalog('trig_r', self.readStick(readByte(packet, len(self.BUTTONS + 40))))
-            return state.build()
+GameCube.PACKET_SIZE = 64
+
+GameCube.BUTTONS = [None, None, None, 'start', 'y', 'x', 'b', 'a', None,
+                    'l', 'r', 'z', 'up', 'down', 'right', 'left']

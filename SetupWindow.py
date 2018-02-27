@@ -4,29 +4,122 @@ import tkinter as tk
 from tkinter import messagebox
 import Skin
 from serial.tools import list_ports
+from ViewWindow import ViewWindow
+
 
 class SetupWindow:
     def __init__(self):
         self.root = tk.Tk()
+
+        self.portmenu = None
+        self.portmenuvar = tk.StringVar('')
+        self.backgroundlist = None
+        self.skinlist = None
+        self.lastbgselection = -1
+        self.selectedskin = None
+
+        self.root.minsize(width=350, height=300)
+        self.root.maxsize(width=350, height=300)
+        self.root.title('Setup')
 
         if not os.path.isdir('skins'):
             tk.messagebox.showerror("Error", "Could not find skins folder!")
             return
         self.skins = Skin.loadAllSkinsFromParentFolder('skins')
 
-        for e in self.skins.pare_errors:
-            print(e)
+        if len(self.skins.pare_errors) > 0:
+            self.showSkinParseError(self.skins.pare_errors)
 
-        self.createComPortMenu()
+        self.addPortList()
+        self.addSkinList()
+        self.addBackgroundList()
+
+        b = tk.Button(self.root, text='go!', command=self.goPressed)
+        b.pack(side=tk.BOTTOM)
+
+        self.root.after(100, self.update)
+        self.root.after(1000, self.portListUpdater)
 
         self.root.mainloop()
 
-    def createComPortMenu(self):
-        variable = tk.StringVar(self.root)
+    def goPressed(self):
+        # make sure a selection has been made!
+        if self.selectedskin is None:
+            return
 
-        ports = list_ports.comports()
-        for p in ports:
-            variable.set(p) # default value
+        if len(self.backgroundlist.curselection()) <= 0:
+            return
 
-        w = tk.OptionMenu(self.root, variable, *ports, '')
-        w.pack()
+        curbg = self.backgroundlist.get(self.backgroundlist.curselection()[0])
+
+        ViewWindow(self.root, self.selectedskin, curbg, self.portmenuvar.get())
+
+    def addBackgroundList(self):
+        self.backgroundlist = tk.Listbox(self.root)
+
+        self.backgroundlist.pack(side=tk.RIGHT)
+
+    def updateBackgroundList(self):
+        if self.backgroundlist is not None:
+            self.backgroundlist.delete(0, 'end')
+
+        # get the corerct skin and load all backgrounds into the list
+        selectedskinname = self.skinlist.get(self.lastbgselection)
+        selectedskin = None
+        for skin in self.skins.skins_loaded:
+            if skin.name == selectedskinname:
+                selectedskin = skin
+                break
+
+        self.selectedskin = selectedskin
+
+        if selectedskin is None:
+            return
+
+        for i in range(0, len(selectedskin.backgrounds)):
+            self.backgroundlist.insert(i, selectedskin.backgrounds[i].name)
+
+    def addSkinList(self):
+        self.skinlist = tk.Listbox(self.root)
+
+        for i in range(0, len(self.skins.skins_loaded)):
+            self.skinlist.insert(i, self.skins.skins_loaded[i].name)
+
+        self.skinlist.pack(side=tk.LEFT)
+
+    def addPortList(self):
+        self.portmenu = tk.OptionMenu(self.root, self.portmenuvar, [], '')
+        self.portListUpdater()
+        self.portmenu.pack(side=tk.TOP, pady=10)
+
+    def portListUpdater(self):
+        if self.portmenu is None:
+            return
+
+        menu = self.portmenu.children['menu']
+        menu.delete(0, 'end')
+
+        self.comports = list_ports.comports()
+        for p in self.comports:
+            menu.add_command(label=p.device, command=lambda v=p.device: self.portmenuvar.set(v))
+
+        if self.portmenuvar.get() == '' and len(self.comports) > 0:
+            self.portmenuvar.set(self.comports[0].device)
+
+        self.root.after(1000, self.portListUpdater)
+
+    def update(self):
+        if self.skinlist is not None and \
+            len(self.skinlist.curselection()) > 0 and \
+                self.skinlist.curselection()[0] != self.lastbgselection:
+            self.lastbgselection = self.skinlist.curselection()[0]
+            self.updateBackgroundList()
+
+        self.root.after(100, self.update)
+
+    def showSkinParseError(self, errors):
+        errorstr = 'Some skins were unable to be parsed:\n\n'
+        for err in errors:
+            errorstr = errorstr + str(err) + '\n'
+
+        tk.messagebox.showerror('Error', errorstr)

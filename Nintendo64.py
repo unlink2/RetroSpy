@@ -3,27 +3,30 @@ from util import readByte
 
 
 class Nintendo64:
-    def __init__(self):
-        self.PACKET_SIZE = 32
+    @staticmethod
+    def readStick(input):
+        return float((input - 128)) / 128.0
 
-        self.BUTTONS = ['a', 'b', 'z', 'start', 'up', 'down', 'left', 'right',
-                        None, None, 'l', 'r', 'cup', 'cdown', 'cleft', 'cright']
+    @staticmethod
+    def readFromPacket(packet):
+        if(len(packet) < Nintendo64.PACKET_SIZE):
+            return None
 
-        def readStick(input):
-            return (input - 128) / 128
+        state = ControllerStateBuilder()
 
-        def readFromPacket(packet):
-            if(len(packet) < self.PACKET_SIZE):
-                return None
+        for i in range(0, len(Nintendo64.BUTTONS)):
+            if Nintendo64.BUTTONS[i] is None:
+                continue
 
-            state = ControllerStateBuilder()
+            state.setButton(Nintendo64.BUTTONS[i], packet[i] != 0x00)
 
-            for i in range(0, len(self.BUTTONS)):
-                if self.BUTTONS[i] is None:
-                    continue
+        state.setAnalog('stick_x', Nintendo64.readStick(readByte(packet, len(Nintendo64.BUTTONS))))
+        state.setAnalog('stick_y', Nintendo64.readStick(readByte(packet, len(Nintendo64.BUTTONS) + 8)))
 
-                state.setButton(self.BUTTONS[i], packet[i] != 0x00)
+        return state.build()
 
-            state.setAnalog('stick_x', self.readStick(readByte(packet, len(self.BUTTONS))))
-            state.setAnalog('stick_y', self.readStick(readByte(packet, len(self.BUTTONS + 8))))
-            return state.build()
+
+Nintendo64.PACKET_SIZE = 31
+
+Nintendo64.BUTTONS = ['a', 'b', 'z', 'start', 'up', 'down', 'left', 'right',
+                None, None, 'l', 'r', 'cup', 'cdown', 'cleft', 'cright']

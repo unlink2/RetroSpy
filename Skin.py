@@ -16,13 +16,14 @@ class ElementConfig:
         self.height = 0  # image dimensions
         self.target_backgrounds = []  # list of strings
         self.ignore_backgrounds = []
+        self.image_crop = None
 
 
 class Background:
     def __init__(self):
         self.name = ""  # string
         self.image = None
-        self.color = {'r': 0, 'g': 0, 'b': 0, 'a': 255}
+        self.color = '#000000'
         self.width = 0
         self.height = 0
 
@@ -30,26 +31,26 @@ class Background:
 class Detail:
     def __init__(self):
         self.name = ""
-        self.element_config = ElementConfig()
+        self.config = ElementConfig()
 
 
 class Button:
     def __init__(self):
         self.name = ""
-        self.element_config = ElementConfig()
+        self.config = ElementConfig()
 
 
 class RangeButton:
     def __init__(self):
         self.name = ""
-        self.element_config = ElementConfig()
+        self.config = ElementConfig()
         self.fromF = 0.0
         self.toF = 0.0  # floats
 
 
 class AnalogStick:
     def __init__(self):
-        self.element_config = ElementConfig()
+        self.config = ElementConfig()
         self.xname = ""
         self.yname = ""  # strings
         self.xrange = 0
@@ -67,7 +68,7 @@ RIGHT = 4
 class AnalogTrigger:
     def __init__(self):
         self.name = ""
-        self.element_config = ElementConfig()
+        self.config = ElementConfig()
         self.direction = UP  # DirectionValue UP DOWN LEFT RIGHT
         self.is_reversed = False  # bool
         self.use_negative = False  # bool
@@ -103,9 +104,7 @@ class Skin:
 
         self.type = None
         # find the apropriate Input Type
-        for source in InputSource.ALL:
-            if source.type_tag == self.readStringAttr(doc['skin'], '@type'):
-                self.type = source
+        self.type = InputSource.makeInputSource(self.readStringAttr(doc['skin'], '@type'))
 
         if self.type is None:
             raise Exception('Illegal value specified for skin \
@@ -209,18 +208,18 @@ class Skin:
             if directionattr == 'up':
                 newa.direction = UP
             elif directionattr == 'down':
-                newa.direction == DOWN
+                newa.direction = DOWN
             elif directionattr == 'left':
-                newa.direction == LEFT
+                newa.direction = LEFT
             elif directionattr == 'right':
-                newa.direction == RIGHT
+                newa.direction = RIGHT
             else:
                 raise Exception('Element \'analog\' attribute \'direction\' \
                 has illegal value. Valid \
                 values are \'up\', \'down\', \'left\', \'right\'.')
 
             newa.config = self.parseStandardConfig(skinpath, a)
-            newa.xname = self.readStringAttr(a, '@name')
+            newa.name = self.readStringAttr(a, '@name')
             newa.is_reversed = self.readBoolAttr(a, '@reverse')
             newa.use_negative = self.readBoolAttr(a, '@usenegative')
 
@@ -262,11 +261,14 @@ class Skin:
         if attrname in elem:
             # parse color
             colstr = elem[attrname]
-            return util.parseColorStr(colstr)
+            try:
+                return util.parseColorStr(colstr)
+            except Exception as e:
+                raise Exception(str(e) + ' ' + self.name)
         elif required:
             raise Exception('Required attribute \'' + attrname + '\' \
             not found.')
-        return {'r': 0, 'g': 0, 'b': 0, 'a': 255}
+        return '#000000'
 
     def readIntAttr(self, elem, attrname):
         if attrname in elem:
@@ -311,6 +313,7 @@ class Skin:
         newelemcfg.x = x
         newelemcfg.y = y
         newelemcfg.image = image
+        newelemcfg.image_crop = image
         newelemcfg.width = width
         newelemcfg.height = height
         newelemcfg.target_backgrounds = targetbgs
