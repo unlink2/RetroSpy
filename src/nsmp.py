@@ -14,13 +14,7 @@ import argparse
 import util
 
 def main():
-    setupwindow = SetupWindow()
-
-    #setialTest = SerialMonitor(SerialMonitorCallback())
-    #while True:
-    #    setialTest.serial_read()
-    #setialTest.stop()
-
+    SetupWindow()
 
 def debugMain(comport):
     DebugWindow(comport)
