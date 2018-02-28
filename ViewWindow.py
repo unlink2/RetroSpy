@@ -3,6 +3,7 @@ from PIL import Image, ImageTk
 from InputSource import InputSource
 from ControllerState import ControllerState
 import Skin
+from serial.serialutil import SerialException
 
 class ViewWindow:
     def __init__(self, root, skin, bgname, comport):
@@ -10,8 +11,12 @@ class ViewWindow:
         self.bgname = bgname
         self.comport = comport
 
-        self.skin.type.makeControllerReader(comport=comport)
-        self.skin.type.controllerreader.controllerstate += self.on_state
+        try:
+            self.skin.type.makeControllerReader(comport=comport)
+            self.skin.type.controllerreader.controllerstate += self.on_state
+        except SerialException as e:
+            tk.messagebox.showerror("Error", str(e))
+            return
 
         self.state = ControllerState({}, {})
 
@@ -176,7 +181,11 @@ class ViewWindow:
         return False
 
     def update(self):
-        self.skin.type.controllerreader.update()
+        try:
+            self.skin.type.controllerreader.update()
+        except SerialException as e:
+            tk.messagebox.showerror("Error", str(e))
+            return
         self.window.after(1, self.update)
 
         # go through states and check what to do
