@@ -8,7 +8,7 @@
 
 from SerialMonitor import SerialMonitor
 from SetupWindow import SetupWindow
-from DebugWindow import DebugWindow
+from CommandlineUI import CommandlineUI
 from serial.tools import list_ports
 import argparse
 import util
@@ -17,7 +17,7 @@ def main():
     SetupWindow()
 
 def debugMain(comport, device_type):
-    DebugWindow(comport, device_type=device_type)
+    CommandlineUI(comport, device_type=device_type)
 
 
 def parseArgs():
@@ -25,10 +25,10 @@ def parseArgs():
     parser.add_argument('--ports', dest='ports',
                         action='store_true',
                         help='Lists all available com ports.')
-    parser.add_argument('--debug', dest='debug',
+    parser.add_argument('--nox', dest='nox',
                         action='store',
-                        help='Turn on pin debugging. Use in combinaition with the debug firmware.\
-                        Usage: --debug <comport> <device type>',
+                        help='Turn on command line mode. This will dump all button states to stdout\
+                        Usage: --nox <comport> <device type>',
                         nargs=2)
 
     args = parser.parse_args()
@@ -38,10 +38,10 @@ def parseArgs():
         for p in ports:
             print(p)
 
-    if args.debug is None:
+    if args.nox is None:
         main()
     else:
-        debugMain(args.debug[0], args.debug[1])
+        debugMain(args.nox[0], args.nox[1])
 
 
 parseArgs()
