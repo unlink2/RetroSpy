@@ -78,6 +78,9 @@ class SerialMonitor:
         command = (''.join(('M',mode,str(pin_number)))).encode()
         self._datPort.write(command)
 
+    def serial_write(self, data):
+        self._datPort.write(data.encode())
+
     def digital_write(self, pin, value):
         """
         Writes the digital_value on pin_number

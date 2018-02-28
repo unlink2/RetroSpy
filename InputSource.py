@@ -14,18 +14,24 @@ class InputSource:
         self.controllerreader = controllerreader   # Controller Class
 
     def makeControllerReader(self, controllerid=0, comport='', preview=False):
+        # TODO send arduino firmware mode over serial and implement reading it in firmware
         if self.type_tag == 'preview' or preview:
             self.controllerreader = PreviewReader(PreviewParser.readFromPacket)
         elif self.type_tag == 'nes':
             self.controllerreader = SerialControllerReader(comport, SuperNESandNES.readFromPacket_NES)
+            # self.controllerreader.serial.serial_write('M' + str(InputSource.index(self.type_tag)))
         elif self.type_tag == 'snes':
             self.controllerreader = SerialControllerReader(comport, SuperNESandNES.readFromPacket_SNES)
+            # self.controllerreader.serial.serial_write('M' + str(InputSource.index(self.type_tag)))
         elif self.type_tag == 'n64':
             self.controllerreader = SerialControllerReader(comport, Nintendo64.readFromPacket)
+            # self.controllerreader.serial.serial_write('M' + str(InputSource.index(self.type_tag)))
         elif self.type_tag == 'gamecube':
             self.controllerreader = SerialControllerReader(comport, GameCube.readFromPacket)
+            # self.controllerreader.serial.serial_write('M' + str(InputSource.index(self.type_tag)))
         elif self.type_tag == 'megadrive':
             self.controllerreader = SerialControllerReader(comport, MegaDrive.readFromPacket)
+            # self.controllerreader.serial.serial_write('M' + str(InputSource.index(self.type_tag)))
         else:
             raise Exception('Unable to make build reader')
 
