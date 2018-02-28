@@ -5,7 +5,7 @@ from util import readByte
 class Nintendo64:
     @staticmethod
     def readStick(input):
-        return float((input - 128)) / 128.0
+        return input / 128.0
 
     @staticmethod
     def readFromPacket(packet):
@@ -20,8 +20,8 @@ class Nintendo64:
 
             state.setButton(Nintendo64.BUTTONS[i], packet[i] != 0x00)
 
-        state.setAnalog('stick_x', Nintendo64.readStick(readByte(packet, len(Nintendo64.BUTTONS))))
-        state.setAnalog('stick_y', Nintendo64.readStick(readByte(packet, len(Nintendo64.BUTTONS) + 8)))
+        state.setAnalog('stick_x', Nintendo64.readStick(readByte(packet, len(Nintendo64.BUTTONS), True)))
+        state.setAnalog('stick_y', Nintendo64.readStick(readByte(packet, len(Nintendo64.BUTTONS) + 8, True)))
 
         return state.build()
 

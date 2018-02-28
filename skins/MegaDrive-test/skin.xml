@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin name="Default MegaDrive" author="unlink" type="megadrive">
+
+    <background name="Default" image="images/Controller-def.png" />
+    <background name="Outline" image="images/Controller-def.png" />
+
+    <button name="a" image="images/Trigger_pressed.png" x="490" y="240" />
+    <button name="b" image="images/Trigger_pressed.png" x="570" y="203" />
+    <button name="c" image="images/Trigger_pressed.png" x="650" y="170" />
+
+    <button name="start" image="images/start_pressed.png" x="515" y="100" />
+
+    <button name="up" image="images/dpad_pressed_up_down.png" x="168" y="175" />
+    <button name="down" image="images/dpad_pressed_up_down.png" x="168" y="250" />
+    <button name="left" image="images/dpad_pressed_left_right.png" x="120" y="218" />
+    <button name="right" image="images/dpad_pressed_left_right.png" x="200" y="218" />
+
+</skin>

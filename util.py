@@ -23,11 +23,13 @@ def parseColorStr(colstr, return_hex=True):
 
 # converts array of at least 8 bytes to an integer
 # implementation of SignalTool
-def readByte(packet, offset):
+def readByte(packet, offset, singed=False):
     val = 0
     for i in range(0, 8):
         if (packet[i + offset] & 0x0F) != 0:
             val = val | (1 << 7 - i)
+    if singed and val > 127:
+        return (256 - val) * (-1)
     return val
 
 

@@ -6,7 +6,8 @@
 
 // ---------- Uncomment one of these options to select operation mode --------------
 //#define MODE_GC
-#define MODE_N64
+//#define MODE_N64
+#define MODE_MD
 //#define MODE_SNES
 //#define MODE_NES
 // Bridge one of the analog GND to the right analog IN to enable your selected mode
@@ -42,6 +43,8 @@
 #define GC_PIN        5
 #define GC_PREFIX    25
 #define GC_BITCOUNT  64
+
+#define MD_SELECT_PIN 8
 
 #define ZERO  '\0'  // Use a byte value of 0x00 to represent a bit with value 0.
 #define ONE    '1'  // Use an ASCII one to represent a bit with value 1.  This makes Arduino debugging easier.
@@ -219,6 +222,36 @@ inline void loop_NES()
     sendRawData( 0 , NES_BITCOUNT );
 }
 
+
+/*
+ * The Megadrive input spy returns 4 bytes
+ * byte 1 = pin 1-9 with 7 high
+ * byte 2 = pin 1-9 with 7 low
+ * Connect MD pins as such (Starting at Arduino PIN 2)
+ * DBUS1 = A2
+ * DBUS2 = A3
+ * DBUS3 = A4
+ * DBUS4 = A5
+ * Do not connect DBUS5
+ * DBUS6 - A6
+ * DBUS7 = A8
+ * DBUS8 = Ground
+ * DBUS9 = A7
+ */
+inline void loop_MD() 
+{
+  // read the state of all lines
+  // this is faster and therefore better for md purposes
+  // to increase our chance of getting all inputs
+  Serial.write(PIND);
+  
+  // now we wait for pin 7 to be 0
+  while(digitalRead(MD_SELECT_PIN) != 0) {}
+
+  Serial.write(PIND);
+  Serial.write(SPLIT);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Arduino sketch main loop definition.
 void loop()
@@ -231,6 +264,8 @@ void loop()
     loop_SNES();
 #elif defined MODE_NES
     loop_NES();
+#elif defined MODE_MD
+    loop_MD();
 #elif defined MODE_DETECT
     if( !PINC_READ( MODEPIN_SNES ) ) {
         loop_SNES();

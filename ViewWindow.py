@@ -213,22 +213,34 @@ class ViewWindow:
                 # TODO this needs a lot of work!
                 if not self.analogtriggers[key]['cfg'].is_reversed:
                     if direction == Skin.RIGHT:
-                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop([0, 0, w * self.state.analogs[key], h])
+                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop(
+                            [0, 0, w * self.state.analogs[key], h])
                     elif direction == Skin.LEFT:
-                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop([0, 0, w * self.state.analogs[key], h])
+                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop(
+                            [w - w * self.state.analogs[key], 0, w, h])
+                        # adjust position
+                        self.cv.coords(key, self.analogtriggers[key]['cfg'].config.x + w - w * self.state.analogs[key], self.analogtriggers[key]['cfg'].config.y)
                     elif direction == Skin.DOWN:
-                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop([0, 0, w, h * self.state.analogs[key]])
+                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop(
+                            [0, 0, w, h * self.state.analogs[key]])
                     elif direction == Skin.UP:
-                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop([0, 0, w, h * self.state.analogs[key]])
+                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop(
+                            [0, h - h * self.state.analogs[key], w, h])
+                        self.cv.coords(key, self.analogtriggers[key]['cfg'].config.x, self.analogtriggers[key]['cfg'].config.y + h - h * self.state.analogs[key])
                 else:
-                    if direction == Skin.LEFT:
-                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop([0, 0, w - w * self.state.analogs[key], h])
-                    elif direction == Skin.RIGHT:
-                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop([0, 0, w - w * self.state.analogs[key], h])
+                    # TODO reverse only works LEFT and UP for now
+                    if direction == Skin.RIGHT:
+                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop(
+                            [0, 0, w - w * self.state.analogs[key], h])
+                    elif direction == Skin.LEFT:
+                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop(
+                            [0, 0, w - w * self.state.analogs[key], h])
                     elif direction == Skin.DOWN:
-                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop([0, 0, w, h - h * self.state.analogs[key]])
+                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop(
+                            [0, 0, w, h - h * self.state.analogs[key]])
                     elif direction == Skin.UP:
-                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop([0, 0, w, h - h * self.state.analogs[key]])
+                        self.analogtriggers[key]['cfg'].config.image_crop = self.analogtriggers[key]['cfg'].config.image.crop(
+                            [0, 0, w, h - h * self.state.analogs[key]])
 
                 tmpimg = ImageTk.PhotoImage(image=self.analogtriggers[key]['cfg'].config.image_crop)
                 self.analogtriggers[key]['img'] = tmpimg
