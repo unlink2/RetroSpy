@@ -2,17 +2,27 @@
 <skin name="Default MegaDrive" author="unlink" type="megadrive">
 
     <background name="Default" image="images/Controller-def.png" />
-    <background name="Outline" image="images/Controller-def.png" />
+    <background name="Outline Gray" image="images/md_Controller_outline.png" />
+    <background name="Outline Blue" image="images/md_Controller_outline_blue.png" />
+    <background name="Outline Yellow" image="images/md_Controller_outline_yellow.png" />
+    <background name="Outline Green" image="images/md_Controller_outline_green.png" />
+    <background name="Outline Eyes" image="images/md_Controller_outline_eyes.png" />
+    <background name="Outline 6 Button Test" image="images/md_Controller_outline.png" />
 
-    <button name="a" image="images/Trigger_pressed.png" x="490" y="240" />
-    <button name="b" image="images/Trigger_pressed.png" x="570" y="203" />
-    <button name="c" image="images/Trigger_pressed.png" x="650" y="170" />
+    <button name="a" image="images/Trigger_pressed.png" x="493" y="242" />
+    <button name="b" image="images/Trigger_pressed.png" x="571" y="200" />
+    <button name="c" image="images/Trigger_pressed.png" x="650" y="168" />
 
-    <button name="start" image="images/start_pressed.png" x="515" y="100" />
+    <button name="x" image="images/Trigger_pressed.png" x="550" y="138" target="Outline 6 Button Test"/>
+    <button name="y" image="images/Trigger_pressed.png" x="550" y="168" target="Outline 6 Button Test"/>
+    <button name="z" image="images/Trigger_pressed.png" x="550" y="128" target="Outline 6 Button Test"/>
 
-    <button name="up" image="images/dpad_pressed_up_down.png" x="168" y="175" />
-    <button name="down" image="images/dpad_pressed_up_down.png" x="168" y="250" />
-    <button name="left" image="images/dpad_pressed_left_right.png" x="120" y="218" />
-    <button name="right" image="images/dpad_pressed_left_right.png" x="200" y="218" />
+    <button name="start" image="images/start_pressed.png" x="522" y="108" />
+    <button name="mode" image="images/start_pressed.png" x="500" y="108" target="Outline 6 Button Test"/>
+
+    <button name="up" image="images/dpad_pressed_up_down.png" x="169" y="174" />
+    <button name="down" image="images/dpad_pressed_up_down.png" x="169" y="256" />
+    <button name="left" image="images/dpad_pressed_left_right.png" x="123" y="222" />
+    <button name="right" image="images/dpad_pressed_left_right.png" x="201" y="222" />
 
 </skin>

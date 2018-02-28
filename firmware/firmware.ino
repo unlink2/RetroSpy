@@ -8,6 +8,7 @@
 //#define MODE_GC
 //#define MODE_N64
 #define MODE_MD
+//#define MODE_MD_6BUTTON
 //#define MODE_SNES
 //#define MODE_NES
 // Bridge one of the analog GND to the right analog IN to enable your selected mode
@@ -249,6 +250,17 @@ inline void loop_MD()
   while(digitalRead(MD_SELECT_PIN) != 0) {}
 
   Serial.write(PIND);
+  // wait 60 ms for 6 button inputs if required
+ #ifdef MODE_MD_6BUTTON
+  while(digitalRead(MD_SELECT_PIN) != 1) {}
+  while(digitalRead(MD_SELECT_PIN) != 0) {}
+  while(digitalRead(MD_SELECT_PIN) != 1) {}
+  while(digitalRead(MD_SELECT_PIN) != 0) {}
+  while(digitalRead(MD_SELECT_PIN) != 1) {}
+  //delayMicroseconds(5);
+  Serial.write(PIND); // 6 button
+  delayMicroseconds(20);
+ #endif
   Serial.write(SPLIT);
 }
 
