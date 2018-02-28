@@ -2,6 +2,7 @@
 import os
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import Menu
 import Skin
 from serial.tools import list_ports
 from ViewWindow import ViewWindow
@@ -34,8 +35,16 @@ class SetupWindow:
         self.addSkinList()
         self.addBackgroundList()
 
-        b = tk.Button(self.root, text='go!', command=self.goPressed)
-        b.pack(side=tk.BOTTOM)
+        gob = tk.Button(self.root, text='go!', command=self.goPressed)
+        gob.pack(side=tk.BOTTOM)
+
+        self.menubar = tk.Menu(self.root)
+        self.root.config(menu=self.menubar)
+
+        self.filemenu = tk.Menu(self.menubar)
+        self.filemenu.add_command(labl='Preview', )
+
+        self.menubar.add_cascade(label="File", menu=self.filemenu)
 
         self.root.after(100, self.update)
         self.root.after(1000, self.portListUpdater)
@@ -53,6 +62,9 @@ class SetupWindow:
         curbg = self.backgroundlist.get(self.backgroundlist.curselection()[0])
 
         ViewWindow(self.root, self.selectedskin, curbg, self.portmenuvar.get())
+
+    def editPressed(self):
+        pass
 
     def addBackgroundList(self):
         self.backgroundlist = tk.Listbox(self.root)
