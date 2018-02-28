@@ -16,8 +16,8 @@ import util
 def main():
     SetupWindow()
 
-def debugMain(comport):
-    DebugWindow(comport)
+def debugMain(comport, device_type):
+    DebugWindow(comport, device_type=device_type)
 
 
 def parseArgs():
@@ -28,7 +28,8 @@ def parseArgs():
     parser.add_argument('--debug', dest='debug',
                         action='store',
                         help='Turn on pin debugging. Use in combinaition with the debug firmware.\
-                        Usage: --debug <comport>')
+                        Usage: --debug <comport> <device type>',
+                        nargs=2)
 
     args = parser.parse_args()
     if args.ports:
@@ -40,7 +41,7 @@ def parseArgs():
     if args.debug is None:
         main()
     else:
-        debugMain(args.debug)
+        debugMain(args.debug[0], args.debug[1])
 
 
 parseArgs()
