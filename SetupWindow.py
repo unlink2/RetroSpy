@@ -42,7 +42,7 @@ class SetupWindow:
         self.root.config(menu=self.menubar)
 
         self.filemenu = tk.Menu(self.menubar)
-        self.filemenu.add_command(labl='Preview', )
+        self.filemenu.add_command(label='Preview', command=self.editPressed)
 
         self.menubar.add_cascade(label="File", menu=self.filemenu)
 
