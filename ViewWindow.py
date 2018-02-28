@@ -57,6 +57,7 @@ class ViewWindow:
     def on_close(self):
         self.root.deiconify()
         self.window.destroy()
+        self.skin.type.controllerreader.finish() # close controller reader
 
 
     def makeCanvas(self, w, h):
