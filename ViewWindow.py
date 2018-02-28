@@ -48,7 +48,16 @@ class ViewWindow:
         self.addAnalogTriggers()
         self.addRangebuttons()
 
+        self.root.withdraw()
+
+        self.window.protocol('WM_DELETE_WINDOW', self.on_close)
+
         self.update()
+
+    def on_close(self):
+        self.root.deiconify()
+        self.window.destroy()
+
 
     def makeCanvas(self, w, h):
         self.cv = tk.Canvas(self.window, width=w, height=h)
