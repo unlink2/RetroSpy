@@ -11,6 +11,7 @@ class ViewWindow:
         self.skin = skin
         self.bgname = bgname
         self.comport = comport
+        self.is_open = True
 
         try:
             self.skin.type.makeControllerReader(comport=comport)
@@ -59,6 +60,7 @@ class ViewWindow:
         self.root.deiconify()
         self.window.destroy()
         self.skin.type.controllerreader.finish() # close controller reader
+        self.is_open = False
 
     def makeCanvas(self, w, h):
         self.cv = tk.Canvas(self.window, width=w, height=h)
@@ -191,6 +193,9 @@ class ViewWindow:
         return False
 
     def update(self):
+        if not self.is_open:
+            return
+
         try:
             self.skin.type.controllerreader.update()
         except SerialException as e:
