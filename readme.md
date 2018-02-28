@@ -22,5 +22,10 @@ It depends on python 3.X and the following libraries
     pip install pillow
     pip install xmltodict
     pip install axel
+    pip install keyboard
+
+New skin tag:
+Buttons can have an onkeydown attribute with a key combination.
+If you run this script as root, or are using windows, it will then send the specified key to the OS as a keyboard input.
 
 More documentation to come soon.

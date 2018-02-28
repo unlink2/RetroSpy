@@ -17,6 +17,7 @@ class ElementConfig:
         self.target_backgrounds = []  # list of strings
         self.ignore_backgrounds = []
         self.image_crop = None
+        self.on_keydown = None
 
 
 class Background:
@@ -246,7 +247,7 @@ class Skin:
         elif required:
             raise Exception('Required attribute \'' + attrname + '\' \
             not found.')
-        return
+        return None
 
     def readArrayAttr(self, elem, attrname, required=True):
         if attrname in elem:
@@ -309,6 +310,8 @@ class Skin:
         targetbgs = self.readArrayAttr(elem, '@target', False)
         ignorebgs = self.readArrayAttr(elem, '@ignore', False)
 
+        on_keydown = self.readStringAttr(elem, '@onkeydown', False)
+
         newelemcfg = ElementConfig()
         newelemcfg.x = x
         newelemcfg.y = y
@@ -318,6 +321,7 @@ class Skin:
         newelemcfg.height = height
         newelemcfg.target_backgrounds = targetbgs
         newelemcfg.ignore_backgrounds = ignorebgs
+        newelemcfg.on_keydown = on_keydown
 
         return newelemcfg
 

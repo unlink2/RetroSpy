@@ -1,4 +1,13 @@
+import os
+import keyboard
 
+def sendKeyToOS(key):
+    # first we check for root or windows
+    # print a warning if not root
+    if os.geteuid() == 0 or os.name == 'nt':
+        keyboard.press_and_release(key)
+    else:
+        print('[Warning]: to send keypresses you must either use Windows or run this script as root!')
 
 def parseColorStr(colstr, return_hex=True):
     if return_hex:

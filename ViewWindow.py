@@ -4,6 +4,7 @@ from InputSource import InputSource
 from ControllerState import ControllerState
 import Skin
 from serial.serialutil import SerialException
+import util
 
 class ViewWindow:
     def __init__(self, root, skin, bgname, comport):
@@ -58,7 +59,6 @@ class ViewWindow:
         self.root.deiconify()
         self.window.destroy()
         self.skin.type.controllerreader.finish() # close controller reader
-
 
     def makeCanvas(self, w, h):
         self.cv = tk.Canvas(self.window, width=w, height=h)
@@ -203,6 +203,10 @@ class ViewWindow:
             if key in self.buttons.keys():
                 if self.state.buttons[key]:
                     self.cv.itemconfigure(self.buttons[key]['mob'], state=tk.NORMAL)
+
+                    # check for onpress action
+                    if self.buttons[key]['cfg'].config.on_keydown is not None:
+                        util.sendKeyToOS(self.buttons[key]['cfg'].config.on_keydown)
                 else:
                     self.cv.itemconfigure(self.buttons[key]['mob'], state=tk.HIDDEN)
 
