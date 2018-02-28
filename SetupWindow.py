@@ -6,7 +6,7 @@ from tkinter import Menu
 import Skin
 from serial.tools import list_ports
 from ViewWindow import ViewWindow
-
+from PreviewWindow import PreviewWindow
 
 class SetupWindow:
     def __init__(self):
@@ -64,7 +64,16 @@ class SetupWindow:
         ViewWindow(self.root, self.selectedskin, curbg, self.portmenuvar.get())
 
     def editPressed(self):
-        pass
+        # make sure a selection has been made!
+        if self.selectedskin is None:
+            return
+
+        if len(self.backgroundlist.curselection()) <= 0:
+            return
+
+        curbg = self.backgroundlist.get(self.backgroundlist.curselection()[0])
+
+        PreviewWindow(self.root, self.selectedskin, curbg)
 
     def addBackgroundList(self):
         self.backgroundlist = tk.Listbox(self.root)

@@ -26,5 +26,5 @@ class SerialControllerReader(ControllerReader):
     def finish(self):
         self.serial.stop()
 
-    def update(self):
+    def update(self, data=None):
         self.serial.serial_read()

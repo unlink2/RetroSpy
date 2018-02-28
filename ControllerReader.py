@@ -9,5 +9,5 @@ class ControllerReader:
     def finish(self):
         pass
 
-    def update(self):
+    def update(self, data=None):
         pass

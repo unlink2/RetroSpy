@@ -7,14 +7,15 @@ from serial.serialutil import SerialException
 import util
 
 class ViewWindow:
-    def __init__(self, root, skin, bgname, comport):
+    def __init__(self, root, skin, bgname, comport, preview=False):
         self.skin = skin
         self.bgname = bgname
         self.comport = comport
         self.is_open = True
+        self.preview = preview
 
         try:
-            self.skin.type.makeControllerReader(comport=comport)
+            self.skin.type.makeControllerReader(comport=comport, preview=preview)
             self.skin.type.controllerreader.controllerstate += self.on_state
         except SerialException as e:
             tk.messagebox.showerror("Error", str(e))
