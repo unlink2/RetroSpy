@@ -16,8 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Also add information on how to contact you by electronic and paper
-# mail.
+# Email: lukaskrickl@gmail.com
 
 # This is a multiplatform port of the input display viewer NintendoSpy
 # The original NintendoSpy was written in C# and does not compile well
