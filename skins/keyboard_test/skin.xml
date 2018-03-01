@@ -47,7 +47,7 @@
     <button name="'" image="pressed.png" x="720" y="127" width="42" height="42" />
     <button name="enter" image="pressed.png" x="780" y="127" width="42" height="42" />
 
-    <button name="shift" image="pressed.png" x="84" y="185" width="42" height="42" />
+    <button name="left shift" image="pressed.png" x="84" y="185" width="42" height="42" />
     <button name="z" image="pressed.png" x="144" y="185" width="42" height="42" />
     <button name="x" image="pressed.png" x="206" y="185" width="42" height="42" />
     <button name="c" image="pressed.png" x="268" y="185" width="42" height="42" />
@@ -58,12 +58,14 @@
     <button name="," image="pressed.png" x="566" y="185" width="42" height="42" />
     <button name="." image="pressed.png" x="626" y="185" width="42" height="42" />
     <button name="/" image="pressed.png" x="686" y="185" width="42" height="42" />
-    <button name="rshift" image="pressed.png" x="748" y="185" width="42" height="42" />
+    <button name="right shift" image="pressed.png" x="748" y="185" width="42" height="42" />
 
-    <button name="ctrl" image="pressed.png" x="15" y="245" width="42" height="42" />
-    <button name="windows" image="pressed.png" x="95" y="245" width="42" height="42" />
+    <button name="left ctrl" image="pressed.png" x="15" y="245" width="42" height="42" />
+    <button name="left windows" image="pressed.png" x="95" y="245" width="42" height="42" />
     <button name="alt" image="pressed.png" x="165" y="245" width="42" height="42" />
     <button name="space" image="pressed.png" x="385" y="245" width="42" height="42" />
     <button name="alt gr" image="pressed.png" x="615" y="245" width="42" height="42" />
+    <button name="right windows" image="pressed.png" x="693" y="245" width="42" height="42" />
     <button name="menu" image="pressed.png" x="755" y="245" width="42" height="42" />
+    <button name="right ctrl" image="pressed.png" x="825" y="245" width="42" height="42" />
 </skin>

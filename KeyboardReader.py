@@ -59,6 +59,12 @@ class KeyboardParser:
         state = ControllerStateBuilder()
         for key in packet:
             p = packet[key]
+            # check for special cases
+            if key == 'shift' or key == 'ctrl' or key == 'windows':
+                if p['type'] == 'button':
+                    state.setButton('left ' + p['name'], p['val'])
+                    state.setButton('right ' + p['name'], p['val'])
+
             if p['type'] == 'button':
                 state.setButton(p['name'], p['val'])
 
