@@ -6,6 +6,7 @@ import Skin
 from serial.serialutil import SerialException
 import util
 
+
 class ViewWindow:
     def __init__(self, root, skin, bgname, comport, preview=False):
         self.skin = skin

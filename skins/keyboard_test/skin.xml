@@ -2,6 +2,38 @@
 <skin name="Default Keyboard" author="unlink" type="keyboard">
 
     <background name="US" image="keyboard.png" />
+
+    <button name="`" image="pressed.png" x="10" y="10" width="42" height="42" />
+    <button name="1" image="pressed.png" x="70" y="10" width="42" height="42" />
+    <button name="2" image="pressed.png" x="130" y="10" width="42" height="42" />
+    <button name="3" image="pressed.png" x="190" y="10" width="42" height="42" />
+    <button name="4" image="pressed.png" x="250" y="10" width="42" height="42" />
+    <button name="5" image="pressed.png" x="310" y="10" width="42" height="42" />
+    <button name="6" image="pressed.png" x="370" y="10" width="42" height="42" />
+    <button name="7" image="pressed.png" x="430" y="10" width="42" height="42" />
+    <button name="8" image="pressed.png" x="490" y="10" width="42" height="42" />
+    <button name="9" image="pressed.png" x="550" y="10" width="42" height="42" />
+    <button name="0" image="pressed.png" x="610" y="10" width="42" height="42" />
+    <button name="-" image="pressed.png" x="670" y="10" width="42" height="42" />
+    <button name="=" image="pressed.png" x="730" y="10" width="42" height="42" />
+    <button name="backspace" image="pressed.png" x="790" y="10" width="42" height="42" />
+
+    <button name="tab" image="pressed.png" x="31" y="65" width="42" height="42" />
+    <button name="q" image="pressed.png" x="93" y="65" width="42" height="42" />
+    <button name="w" image="pressed.png" x="155" y="65" width="42" height="42" />
+    <button name="e" image="pressed.png" x="217" y="65" width="42" height="42" />
+    <button name="r" image="pressed.png" x="279" y="65" width="42" height="42" />
+    <button name="t" image="pressed.png" x="341" y="65" width="42" height="42" />
+    <button name="y" image="pressed.png" x="403" y="65" width="42" height="42" />
+    <button name="u" image="pressed.png" x="462" y="65" width="42" height="42" />
+    <button name="i" image="pressed.png" x="524" y="65" width="42" height="42" />
+    <button name="o" image="pressed.png" x="584" y="65" width="42" height="42" />
+    <button name="p" image="pressed.png" x="647" y="65" width="42" height="42" />
+    <button name="[" image="pressed.png" x="708" y="65" width="42" height="42" />
+    <button name="]" image="pressed.png" x="765" y="65" width="42" height="42" />
+    <button name="\" image="pressed.png" x="827" y="65" width="42" height="42" />
+
+    <button name="caps lock" image="pressed.png" x="52" y="127" width="42" height="42" />
     <button name="a" image="pressed.png" x="114" y="127" width="42" height="42" />
     <button name="s" image="pressed.png" x="176" y="127" width="42" height="42" />
     <button name="d" image="pressed.png" x="236" y="127" width="42" height="42" />
@@ -9,4 +41,29 @@
     <button name="g" image="pressed.png" x="357" y="127" width="42" height="42" />
     <button name="h" image="pressed.png" x="416" y="127" width="42" height="42" />
     <button name="j" image="pressed.png" x="474" y="127" width="42" height="42" />
+    <button name="k" image="pressed.png" x="536" y="127" width="42" height="42" />
+    <button name="l" image="pressed.png" x="598" y="127" width="42" height="42" />
+    <button name=";" image="pressed.png" x="660" y="127" width="42" height="42" />
+    <button name="'" image="pressed.png" x="720" y="127" width="42" height="42" />
+    <button name="enter" image="pressed.png" x="780" y="127" width="42" height="42" />
+
+    <button name="shift" image="pressed.png" x="84" y="185" width="42" height="42" />
+    <button name="z" image="pressed.png" x="144" y="185" width="42" height="42" />
+    <button name="x" image="pressed.png" x="206" y="185" width="42" height="42" />
+    <button name="c" image="pressed.png" x="268" y="185" width="42" height="42" />
+    <button name="v" image="pressed.png" x="328" y="185" width="42" height="42" />
+    <button name="b" image="pressed.png" x="384" y="185" width="42" height="42" />
+    <button name="n" image="pressed.png" x="446" y="185" width="42" height="42" />
+    <button name="m" image="pressed.png" x="506" y="185" width="42" height="42" />
+    <button name="," image="pressed.png" x="566" y="185" width="42" height="42" />
+    <button name="." image="pressed.png" x="626" y="185" width="42" height="42" />
+    <button name="/" image="pressed.png" x="686" y="185" width="42" height="42" />
+    <button name="rshift" image="pressed.png" x="748" y="185" width="42" height="42" />
+
+    <button name="ctrl" image="pressed.png" x="15" y="245" width="42" height="42" />
+    <button name="windows" image="pressed.png" x="95" y="245" width="42" height="42" />
+    <button name="alt" image="pressed.png" x="165" y="245" width="42" height="42" />
+    <button name="space" image="pressed.png" x="385" y="245" width="42" height="42" />
+    <button name="alt gr" image="pressed.png" x="615" y="245" width="42" height="42" />
+    <button name="menu" image="pressed.png" x="755" y="245" width="42" height="42" />
 </skin>
