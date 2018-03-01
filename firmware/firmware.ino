@@ -13,6 +13,7 @@
 //#define MODE_NES
 // Bridge one of the analog GND to the right analog IN to enable your selected mode
 //#define MODE_DETECT
+//#define MODE_DETECT_SERIAL // uncomment this to allow serial to send mode information on startup
 // ---------------------------------------------------------------------------------
 // The only reason you'd want to use 2-wire SNES mode is if you built a NintendoSpy
 // before the 3-wire firmware was implemented.  This mode is for backwards
@@ -21,15 +22,18 @@
 // ---------------------------------------------------------------------------------
 
 
-#define PIN_READ( pin )  (PIND&(1<<(pin)))
-#define PINC_READ( pin ) (PINC&(1<<(pin)))
+#define PIN_READ( pin )  (PIND&(1<<(pin))) // D (digital pins 0 to 7) 
+#define PINB_READ( pin ) (PINB&(1<<(pin))) // B (digital pin 8 to 13) 
+#define PINC_READ( pin ) (PINC&(1<<(pin))) // C (analog input pins) 
 #define MICROSECOND_NOPS "nop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\n"
 
 #define WAIT_FALLING_EDGE( pin ) while( !PIN_READ(pin) ); while( PIN_READ(pin) );
+#define WAIT_FALLING_EDGE_B( pin ) while( !PINB_READ(pin) ); while( PINB_READ(pin) );
 
 #define MODEPIN_SNES 0
 #define MODEPIN_N64  1
 #define MODEPIN_GC   2
+#define MODEPIN_MD 3
 
 #define N64_PIN        2
 #define N64_PREFIX     9
@@ -53,15 +57,16 @@
 
 
 
-
 // Declare some space to store the bits we read from a controller.
 unsigned char rawData[ 128 ];
+unsigned short mode; // used to store controller mode 
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // General initialization, just sets all pins to input and starts serial communication.
 void setup()
 {
+    mode = -1; // underflow mode 
     PORTD = 0x00;
     DDRD  = 0x00;
     PORTC = 0xFF; // Set the pull-ups on the port we use to check operation mode.
@@ -246,8 +251,9 @@ inline void loop_MD()
   // to increase our chance of getting all inputs
   Serial.write(PIND);
   
-  // now we wait for pin 7 to be 0
-  while(digitalRead(MD_SELECT_PIN) != 0) {}
+  // now we wait for pin 7 to be 0 - pin 7 is B0
+  while(PINB_READ(0) != 0) {}
+  asm volatile( MICROSECOND_NOPS MICROSECOND_NOPS );
 
   Serial.write(PIND);
   // wait 60 ms for 6 button inputs if required
@@ -285,8 +291,31 @@ void loop()
         loop_N64();
     } else if( !PINC_READ( MODEPIN_GC ) ) {
         loop_GC();
+    } else if( !PINC_READ( MODEPIN_MD ) ) {
+      loop_MD();
     } else {
-        loop_NES();
+      loop_NES();
+    }
+   // TODO 
+#elif defined MODE_DETECT_SERIAL
+    if (Serial.available() > 0) {
+      mode = Serial.read();
+      if(mode == 'M') {
+        delay(5); // wait for next transmission
+        mode = Serial.parseInt();
+        Serial.print('M');
+      }
+    }
+    if( mode == MODEPIN_SNES ) {
+        loop_SNES();
+    } else if( mode == MODEPIN_N64 ) {
+        loop_N64();
+    } else if( mode == MODEPIN_GC ) {
+        loop_GC();
+    } else if( mode == MODEPIN_MD ) {
+      loop_MD();
+    } else {
+      loop_NES();
     }
 #endif
 }

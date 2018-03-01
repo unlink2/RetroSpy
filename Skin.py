@@ -10,6 +10,7 @@ from InputSource import InputSource
 class ElementConfig:
     def __init__(self):
         self.image = None  # tk image
+        self.image_path = ''
         self.x = 0
         self.y = 0
         self.width = 0
@@ -24,6 +25,7 @@ class Background:
     def __init__(self):
         self.name = ""  # string
         self.image = None
+        self.image_path = ''
         self.color = '#000000'
         self.width = 0
         self.height = 0
@@ -90,21 +92,39 @@ class Skin:
         self.analogsticks = []  # list of analogsticks
         self.analogtriggers = []  # list of analogtriggers
 
+        self.name = ''
+        self.author = ''
+        self.type = None
+
         cwd = os.getcwd()
         skinpath = os.path.join(cwd, folder)
 
-        if not Path(os.path.join(skinpath, 'skin.xml')).exists():
-            raise Exception("Could not find skin.xml for skin at " + skinpath)
+        doc = {'skin': {}}
+        self.doc = doc
+        self.skinpath = skinpath
 
-        doc = {}
+        new_path = False
+
+        if not Path(skinpath).exists():
+            new_path = True
+            os.mkdir(skinpath)
+
+        if not Path(os.path.join(skinpath, 'skin.xml')).exists():
+            if not new_path:
+                raise Exception("Could not find skin.xml for skin at " + skinpath)
+
         with open(os.path.join(skinpath, 'skin.xml')) as fd:
-            doc = xmltodict.parse(fd.read())
+            if not new_path:
+                doc = xmltodict.parse(fd.read())
+            else:
+                # make new skin.xml
+                fd.write(xmltodict.unparse(doc, pretty=True))
 
         self.name = self.readStringAttr(doc['skin'], '@name')
         self.author = self.readStringAttr(doc['skin'], '@author')
 
-        self.type = None
         # find the apropriate Input Type
+        self.type_str = self.readStringAttr(doc['skin'], '@type')
         self.type = InputSource.makeInputSource(self.readStringAttr(doc['skin'], '@type'))
 
         if self.type is None:
@@ -124,14 +144,14 @@ class Skin:
                 # TODO find a way to deal with stupid windows escaped paths
                 image = Image.open(os.path.join(skinpath, imagepath))
                 width, height = image.size
-                if '@width' in bg and bg['@width'] > 0:
+                if '@width' in bg and int(bg['@width']) > 0:
                     width = bg['@width']
-                if '@height' in bg and bg['@height'] > 0:
+                if '@height' in bg and int(bg['@height']) > 0:
                     height = bg['@height']
             else:
-                if '@width' in bg and bg['@width'] > 0:
+                if '@width' in bg and int(bg['@width']) > 0:
                     width = bg['@width']
-                if '@height' in bg['@height']:
+                if '@height' in bg and int(bg['@height']) > 0:
                     height = bg['@height']
 
                 if width > 0 and height > 0:
@@ -146,6 +166,7 @@ class Skin:
             newbg.color = self.readColorAttr(bg, '@color', False)
             newbg.width = width
             newbg.height = height
+            newbg.image_path = imagepath
 
             self.backgrounds.append(newbg)
 
@@ -251,6 +272,8 @@ class Skin:
 
     def readArrayAttr(self, elem, attrname, required=True):
         if attrname in elem:
+            if elem[attrname] == '':
+                return []
             return elem[attrname].split(';')
         elif required:
             raise Exception('Required attribute \'' + attrname + '\' \
@@ -299,10 +322,10 @@ class Skin:
         widthattr = self.readIntAttr(elem, '@width')
         heightattr = self.readIntAttr(elem, '@height')
         if widthattr > 0:
-            width = elem['@width']
+            width = widthattr
 
         if heightattr > 0:
-            height = elem['@height']
+            height = heightattr
 
         x = self.readIntAttr(elem, '@x')
         y = self.readIntAttr(elem, '@y')
@@ -322,9 +345,137 @@ class Skin:
         newelemcfg.target_backgrounds = targetbgs
         newelemcfg.ignore_backgrounds = ignorebgs
         newelemcfg.on_keydown = on_keydown
+        newelemcfg.image_path = imageattr
 
         return newelemcfg
 
+    # this unparses all the xmls and writes them back. if no path is chosen it
+    # writes to previous
+
+    def write_to_xml(self, path=None):
+        if path is None:
+            path = self.skinpath
+
+        # empty skin xml
+        doc = {'skin': {
+            '@author': self.author,
+            '@name': self.name,
+            '@type': self.type_str
+        }}
+
+        for bg in self.backgrounds:
+            if 'background' not in doc['skin']:
+                doc['skin']['background'] = []
+
+            bgdict = {}
+            bgdict['@name'] = bg.name
+            bgdict['@image'] = bg.image_path
+            bgdict['@color'] = bg.color.replace('#', '')
+            bgdict['@width'] = bg.width
+            bgdict['@height'] = bg.height
+
+            doc['skin']['background'].append(bgdict)
+
+        for d in self.details:
+            if 'detail' not in doc['skin']:
+                doc['skin']['detail'] = []
+
+            detaildict = self.default_config_to_dict(d)
+            detaildict['@name'] = d.name
+
+            doc['skin']['detail'].append(detaildict)
+
+        for b in self.buttons:
+            if 'button' not in doc['skin']:
+                doc['skin']['button'] = []
+
+            buttondict = self.default_config_to_dict(b)
+            buttondict['@name'] = b.name
+
+            doc['skin']['button'].append(buttondict)
+
+        for rb in self.rangebuttons:
+            if 'rangebutton' not in doc['skin']:
+                doc['skin']['rangebutton'] = []
+
+            rbdict = self.default_config_to_dict(rb)
+            rbdict['@name'] = rb.name
+            rbdict['@to'] = rb.toF
+            rbdict['@from'] = rb.fromF
+
+            doc['skin']['rangebutton'].append(rbdict)
+
+        for s in self.analogsticks:
+            if 'stick' not in doc['skin']:
+                doc['skin']['stick'] = []
+
+            sdict = self.default_config_to_dict(s)
+            sdict['@xname'] = s.xname
+            sdict['@yname'] = s.yname
+            sdict['@xrange'] = s.xrange
+            sdict['@yrange'] = s.yrange
+
+            if s.xreverse:
+                sdict['@xreverse'] = 'true'
+            else:
+                sdict['@xreverse'] = 'false'
+            if s.yreverse:
+                sdict['@yreverse'] = 'true'
+            else:
+                sdict['@yreverse'] = 'false'
+
+            doc['skin']['stick'].append(sdict)
+
+        for a in self.analogtriggers:
+            if 'analog' not in doc['skin']:
+                doc['skin']['analog'] = []
+
+            adict = self.default_config_to_dict(a)
+
+            if a.direction == UP:
+                adict['@direction'] = 'up'
+            elif a.direction == DOWN:
+                adict['@direction'] = 'down'
+            elif a.direction == LEFT:
+                adict['@direction'] = 'left'
+            elif a.direction == RIGHT:
+                adict['@direction'] = 'right'
+            else:
+                raise Exception('Element \'analog\' has illegal \'direction\' value')
+
+            adict['@name'] = a.name
+
+            if a.is_reversed:
+                adict['@reverse'] = 'true'
+            else:
+                adict['@reverse'] = 'false'
+
+            if a.use_negative:
+                adict['@usenegative'] = 'true'
+            else:
+                adict['@usenegative'] = 'false'
+
+            doc['skin']['analog'].append(adict)
+
+        with open(os.path.join(path, 'skin.xml'), 'w') as fd:
+            fd.write(xmltodict.unparse(doc, pretty=True))
+
+    def default_config_to_dict(self, element):
+        dc = element.config
+        d = {}
+
+        d['@image'] = dc.image_path
+        d['@x'] = dc.x
+        d['@y'] = dc.y
+        d['@width'] = dc.width
+        d['@height'] = dc.height
+        d['@target'] = ';'.join(str(x) for x in dc.target_backgrounds)
+        d['@ignore'] = ';'.join(str(x) for x in dc.ignore_backgrounds)
+
+        if dc.on_keydown is not None:
+            d['@onkeydown'] = dc.on_keydown
+
+        return d
 
 # ==================================================================#
 # Helper function/calss                                             #

@@ -19,19 +19,19 @@ class InputSource:
             self.controllerreader = PreviewReader(PreviewParser.readFromPacket)
         elif self.type_tag == 'nes':
             self.controllerreader = SerialControllerReader(comport, SuperNESandNES.readFromPacket_NES)
-            # self.controllerreader.serial.serial_write('M' + str(InputSource.index(self.type_tag)))
+            self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
         elif self.type_tag == 'snes':
             self.controllerreader = SerialControllerReader(comport, SuperNESandNES.readFromPacket_SNES)
-            # self.controllerreader.serial.serial_write('M' + str(InputSource.index(self.type_tag)))
+            self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
         elif self.type_tag == 'n64':
             self.controllerreader = SerialControllerReader(comport, Nintendo64.readFromPacket)
-            # self.controllerreader.serial.serial_write('M' + str(InputSource.index(self.type_tag)))
+            self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
         elif self.type_tag == 'gamecube':
             self.controllerreader = SerialControllerReader(comport, GameCube.readFromPacket)
-            # self.controllerreader.serial.serial_write('M' + str(InputSource.index(self.type_tag)))
+            self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
         elif self.type_tag == 'megadrive':
             self.controllerreader = SerialControllerReader(comport, MegaDrive.readFromPacket)
-            # self.controllerreader.serial.serial_write('M' + str(InputSource.index(self.type_tag)))
+            self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
         else:
             raise Exception('Unable to make build reader')
 
@@ -55,3 +55,4 @@ class InputSource:
 
 
 InputSource.ALL = ['nes', 'snes', 'n64', 'gamecube', 'megadrive', 'preview']
+InputSource.ARDUINO_MODEPINS = {'nes': 4, 'snes': 0, 'n64': 1, 'gamecube': 2, 'megadrive': 3}
