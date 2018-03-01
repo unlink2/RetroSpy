@@ -16,8 +16,7 @@ class ViewWindow:
         self.preview = preview
 
         try:
-            self.skin.type.makeControllerReader(comport=comport, preview=preview)
-            self.skin.type.controllerreader.controllerstate += self.on_state
+            self.make_reader()
         except SerialException as e:
             tk.messagebox.showerror("Error", str(e))
             return
@@ -45,18 +44,35 @@ class ViewWindow:
         self.window.minsize(width=self.current_bg.width, height=self.current_bg.height)
         self.window.maxsize(width=self.current_bg.width, height=self.current_bg.height)
 
-        self.addBackground()
-        self.addButtons()
-        self.addDetail()
-        self.addAnalogSticks()
-        self.addAnalogTriggers()
-        self.addRangebuttons()
+        self.load()
 
         self.root.withdraw()
 
         self.window.protocol('WM_DELETE_WINDOW', self.on_close)
 
         self.update()
+
+    def make_reader(self):
+        self.skin.type.makeControllerReader(comport=self.comport, preview=self.preview)
+        self.skin.type.controllerreader.controllerstate += self.on_state
+
+
+    def load(self):
+        self.background = None
+        self.buttons = {}
+        self.details = {}
+        self.rangebuttons = {}
+        self.analogsticks = {}
+        self.analogtriggers = {}
+
+        self.cv.delete('all')
+
+        self.addBackground()
+        self.addButtons()
+        self.addDetail()
+        self.addAnalogSticks()
+        self.addAnalogTriggers()
+        self.addRangebuttons()
 
     def on_close(self):
         self.root.deiconify()

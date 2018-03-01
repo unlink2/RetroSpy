@@ -1,6 +1,6 @@
 from ViewWindow import ViewWindow
 import tkinter as tk
-
+from serial.serialutil import SerialException
 
 class PreviewWindow(ViewWindow):
     def __init__(self, root, skin, bgname):
@@ -24,6 +24,9 @@ class PreviewWindow(ViewWindow):
         svb = tk.Button(self.edit_window, text='set value', command=self.set_value_pressed)
         svb.pack()
 
+        rskb = tk.Button(self.edit_window, text='reload skin', command=self.reload_skin_pressed)
+        rskb.pack()
+
         self.preview_data = {}
         self.preview_update()
 
@@ -34,6 +37,14 @@ class PreviewWindow(ViewWindow):
         self.skin.type.controllerreader.update(self.preview_data)
 
         self.window.after(1, self.preview_update)
+
+    def reload_skin_pressed(self):
+        self.skin.load()
+        try:
+            self.make_reader()
+        except SerialException as e:
+            tk.messagebox.showerror("Error", str(e))
+        self.load()
 
     def set_value_pressed(self):
         key = self.keyentry.get()

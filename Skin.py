@@ -102,23 +102,16 @@ class Skin:
         doc = {'skin': {}}
         self.doc = doc
         self.skinpath = skinpath
+        self.load()
 
-        new_path = False
-
-        if not Path(skinpath).exists():
-            new_path = True
-            os.mkdir(skinpath)
-
+    def load(self):
+        cwd = os.getcwd()
+        skinpath = self.skinpath
         if not Path(os.path.join(skinpath, 'skin.xml')).exists():
-            if not new_path:
-                raise Exception("Could not find skin.xml for skin at " + skinpath)
+            raise Exception("Could not find skin.xml for skin at " + skinpath)
 
         with open(os.path.join(skinpath, 'skin.xml')) as fd:
-            if not new_path:
-                doc = xmltodict.parse(fd.read())
-            else:
-                # make new skin.xml
-                fd.write(xmltodict.unparse(doc, pretty=True))
+            doc = xmltodict.parse(fd.read())
 
         self.name = self.readStringAttr(doc['skin'], '@name')
         self.author = self.readStringAttr(doc['skin'], '@author')
