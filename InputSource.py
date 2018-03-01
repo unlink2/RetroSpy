@@ -4,6 +4,8 @@ from MegaDrive import MegaDrive
 from SuperNESandNES import SuperNESandNES
 from SerialControllerReader import SerialControllerReader
 from PreviewReader import PreviewReader, PreviewParser
+from KeyboardReader import KeyboardReader, KeyboardParser
+
 
 class InputSource:
     def __init__(self, type_tag, name, requries_comport, requires_id, controllerreader):
@@ -32,6 +34,8 @@ class InputSource:
         elif self.type_tag == 'megadrive':
             self.controllerreader = SerialControllerReader(comport, MegaDrive.readFromPacket)
             self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
+        elif self.type_tag == 'keyboard':
+            self.controllerreader = KeyboardReader(KeyboardParser.readFromPacket)
         else:
             raise Exception('Unable to make build reader')
 
@@ -50,9 +54,11 @@ class InputSource:
                 return InputSource('megadrive', 'MegaDrive', True, False, None)
             elif type_tag == 'preview':
                 return InputSource('preview', 'Preview', False, False, None)
+            elif type_tag == 'keyboard':
+                return InputSource('keyboard', 'Keyboard', False, False, None)
 
         return None  # return None in case of fail
 
 
-InputSource.ALL = ['nes', 'snes', 'n64', 'gamecube', 'megadrive', 'preview']
+InputSource.ALL = ['nes', 'snes', 'n64', 'gamecube', 'megadrive', 'preview', 'keyboard']
 InputSource.ARDUINO_MODEPINS = {'nes': 4, 'snes': 0, 'n64': 1, 'gamecube': 2, 'megadrive': 3}

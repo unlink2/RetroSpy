@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin name="Default Keyboard" author="unlink" type="keyboard">
+
+    <background name="Blue" image="GCN_Controller_Blue.png" />
+    <button name="a" image="A.png" x="267" y="116" width="42" height="42" />
+</skin>

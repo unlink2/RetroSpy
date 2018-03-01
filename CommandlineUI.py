@@ -9,7 +9,7 @@ from ControllerState import ControllerState
 
 
 class CommandlineUI:
-    def __init__(self, comport, ui=0.05, device_type = 'nes'):
+    def __init__(self, comport, ui=0.05, device_type='nes'):
         self.inputsource = InputSource.makeInputSource(device_type)
         self.inputsource.makeControllerReader(comport=comport)
         self.inputsource.controllerreader.controllerstate += self.on_state
