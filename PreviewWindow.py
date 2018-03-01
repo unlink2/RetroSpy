@@ -1,6 +1,7 @@
 from ViewWindow import ViewWindow
 import tkinter as tk
 
+
 class PreviewWindow(ViewWindow):
     def __init__(self, root, skin, bgname):
         ViewWindow.__init__(self, root, skin, bgname, '', preview=True)

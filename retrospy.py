@@ -44,6 +44,9 @@ def parseArgs():
     parser.add_argument('--ports', dest='ports',
                         action='store_true',
                         help='Lists all available com ports.')
+    parser.add_argument('--about', dest='about',
+                        action='store_true',
+                        help='Print out information about the program')
     parser.add_argument('--nox', dest='nox',
                         action='store',
                         help='Turn on command line mode. This will dump all button states to stdout\
@@ -56,6 +59,9 @@ def parseArgs():
         print("Available com ports: ")
         for p in ports:
             print(p)
+
+    if args.about:
+        print(util.ABOUT_TEXT)
 
     if args.nox is None:
         main()
