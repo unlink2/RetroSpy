@@ -56,7 +56,6 @@ class ViewWindow:
         self.skin.type.makeControllerReader(comport=self.comport, preview=self.preview)
         self.skin.type.controllerreader.controllerstate += self.on_state
 
-
     def load(self):
         self.background = None
         self.buttons = {}
@@ -158,8 +157,6 @@ class ViewWindow:
                                           anchor='nw',
                                           image=tmpimg,
                                           tags=[analog.xname, analog.yname])
-            if not self.preview:
-                self.cv.itemconfigure(tmpmob, state=tk.HIDDEN)
 
             # add button to list
             self.analogsticks[analog.xname] = {'mob': tmpmob, 'img': tmpimg, 'cfg': analog}
@@ -184,7 +181,7 @@ class ViewWindow:
                                           image=tmpimg,
                                           tags=rb.name)
             if not self.preview:
-                self.cv.itemconfigure(self.buttons[key]['mob'], state=tk.HIDDEN)
+                self.cv.itemconfigure(tmpmob, state=tk.HIDDEN)
 
             # add button to list
             self.rangebuttons[rb.name] = {'mob': tmpmob, 'img': tmpimg, 'cfg': rb}
@@ -207,8 +204,6 @@ class ViewWindow:
                                           anchor='nw',
                                           image=tmpimg,
                                           tags=rb.name)
-            if not self.preview:
-                self.cv.itemconfigure(self.buttons[key]['mob'], state=tk.HIDDEN)
 
             # add button to list
             self.analogtriggers[rb.name] = {'mob': tmpmob, 'img': tmpimg, 'cfg': rb}
