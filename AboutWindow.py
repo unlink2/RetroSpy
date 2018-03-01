@@ -13,3 +13,4 @@ class AboutWindow():
         scrollbar.config(command=abouttext.yview)
         abouttext.config(yscrollcommand=scrollbar.set)
         abouttext.insert(tk.END, ABOUT_TEXT)
+        abouttext["state"] = tk.DISABLED
