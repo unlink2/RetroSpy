@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <skin name="Default Keyboard" author="unlink" type="keyboard">
 
-    <background name="Blue" image="GCN_Controller_Blue.png" />
-    <button name="a" image="A.png" x="267" y="116" width="42" height="42" />
+    <background name="US" image="keyboard.png" />
+    <button name="a" image="pressed.png" x="114" y="127" width="42" height="42" />
+    <button name="s" image="pressed.png" x="176" y="127" width="42" height="42" />
+    <button name="d" image="pressed.png" x="236" y="127" width="42" height="42" />
+    <button name="f" image="pressed.png" x="295" y="127" width="42" height="42" />
+    <button name="g" image="pressed.png" x="357" y="127" width="42" height="42" />
+    <button name="h" image="pressed.png" x="416" y="127" width="42" height="42" />
+    <button name="j" image="pressed.png" x="474" y="127" width="42" height="42" />
 </skin>

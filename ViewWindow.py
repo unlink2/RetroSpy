@@ -93,6 +93,8 @@ class ViewWindow:
                                           anchor='nw',
                                           image=tmpimg,
                                           tags=button.name)
+            if not self.preview:
+                self.cv.itemconfigure(tmpmob, state=tk.HIDDEN)
 
             # add button to list
             self.buttons[button.name] = {'mob': tmpmob, 'img': tmpimg, 'cfg': button}
@@ -115,6 +117,8 @@ class ViewWindow:
                                           anchor='nw',
                                           image=tmpimg,
                                           tags=detail.name)
+            if not self.preview:
+                self.cv.itemconfigure(tmpmob, state=tk.HIDDEN)
 
             # add button to list
             self.details[detail.name] = {'mob': tmpmob, 'img': tmpimg, 'cfg': detail}
@@ -137,6 +141,8 @@ class ViewWindow:
                                           anchor='nw',
                                           image=tmpimg,
                                           tags=[analog.xname, analog.yname])
+            if not self.preview:
+                self.cv.itemconfigure(tmpmob, state=tk.HIDDEN)
 
             # add button to list
             self.analogsticks[analog.xname] = {'mob': tmpmob, 'img': tmpimg, 'cfg': analog}
@@ -160,6 +166,8 @@ class ViewWindow:
                                           anchor='nw',
                                           image=tmpimg,
                                           tags=rb.name)
+            if not self.preview:
+                self.cv.itemconfigure(self.buttons[key]['mob'], state=tk.HIDDEN)
 
             # add button to list
             self.rangebuttons[rb.name] = {'mob': tmpmob, 'img': tmpimg, 'cfg': rb}
@@ -182,6 +190,8 @@ class ViewWindow:
                                           anchor='nw',
                                           image=tmpimg,
                                           tags=rb.name)
+            if not self.preview:
+                self.cv.itemconfigure(self.buttons[key]['mob'], state=tk.HIDDEN)
 
             # add button to list
             self.analogtriggers[rb.name] = {'mob': tmpmob, 'img': tmpimg, 'cfg': rb}
