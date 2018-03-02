@@ -8,6 +8,8 @@ from serial.tools import list_ports
 from ViewWindow import ViewWindow
 from PreviewWindow import PreviewWindow
 from AboutWindow import AboutWindow
+from util import isUserRoot
+
 
 class SetupWindow:
     def __init__(self):
@@ -62,6 +64,12 @@ class SetupWindow:
             return
 
         curbg = self.backgroundlist.get(self.backgroundlist.curselection()[0])
+
+        if self.selectedskin.type_str == 'keyboard':
+            # check for root
+            if not isUserRoot():
+                tk.messagebox.showwarning("Root Required", "You must be root to use the keybard viewer!")
+                return
 
         ViewWindow(self.root, self.selectedskin, curbg, self.portmenuvar.get())
 

@@ -2,6 +2,7 @@ from ViewWindow import ViewWindow
 import tkinter as tk
 from serial.serialutil import SerialException
 
+
 class PreviewWindow(ViewWindow):
     def __init__(self, root, skin, bgname):
         ViewWindow.__init__(self, root, skin, bgname, '', preview=True)
@@ -27,8 +28,14 @@ class PreviewWindow(ViewWindow):
         rskb = tk.Button(self.edit_window, text='reload skin', command=self.reload_skin_pressed)
         rskb.pack()
 
+        self.edit_window.protocol('WM_DELETE_WINDOW', self.on_close)
+
         self.preview_data = {}
         self.preview_update()
+
+    def on_close(self):
+        ViewWindow.on_close(self)
+        self.edit_window.destroy()
 
     def preview_update(self):
         if not self.is_open:

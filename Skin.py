@@ -94,6 +94,7 @@ class Skin:
 
         self.name = ''
         self.author = ''
+        self.type_str = ''
         self.type = None
 
         cwd = os.getcwd()
@@ -108,7 +109,7 @@ class Skin:
         cwd = os.getcwd()
         skinpath = self.skinpath
         if not Path(os.path.join(skinpath, 'skin.xml')).exists():
-            raise Exception("Could not find skin.xml for skin at " + skinpath)
+            raise SkinParseException("Could not find skin.xml for skin at " + skinpath)
 
         with open(os.path.join(skinpath, 'skin.xml')) as fd:
             doc = xmltodict.parse(fd.read())
@@ -121,7 +122,7 @@ class Skin:
         self.type = InputSource.makeInputSource(self.readStringAttr(doc['skin'], '@type'))
 
         if self.type is None:
-            raise Exception('Illegal value specified for skin \
+            raise SkinParseException('Illegal value specified for skin \
             attribute\'type\'. ' + skinpath)
 
         backgrounds = self.getAllElements(doc['skin'], 'background', True)
@@ -148,7 +149,7 @@ class Skin:
                     height = bg['@height']
 
                 if width > 0 and height > 0:
-                    raise Exception('Element \'background\' should either define\
+                    raise SkinParseException('Element \'background\' should either define\
                     \'image\' with optionally \'width\' and \'height\'\
                     or both \'width\' and \'height\'.')
 
@@ -188,7 +189,7 @@ class Skin:
             tof = self.readFloatAttr(rb, '@to')
 
             if fromf > tof:
-                raise Exception('Rangebutton \'from\' field cannot be greater\
+                raise SkinParseException('Rangebutton \'from\' field cannot be greater\
                 than \'to\' field.')
 
             newrb = RangeButton()
@@ -229,7 +230,7 @@ class Skin:
             elif directionattr == 'right':
                 newa.direction = RIGHT
             else:
-                raise Exception('Element \'analog\' attribute \'direction\' \
+                raise SkinParseException('Element \'analog\' attribute \'direction\' \
                 has illegal value. Valid \
                 values are \'up\', \'down\', \'left\', \'right\'.')
 
@@ -250,7 +251,7 @@ class Skin:
             allele = [allele]
 
         if len(allele) < 1 and required:
-            raise Exception('Skin must contain at least one \
+            raise SkinParseException('Skin must contain at least one \
             \'' + attrname + '\'.')
 
         return allele
@@ -259,7 +260,7 @@ class Skin:
         if attrname in elem:
             return elem[attrname]
         elif required:
-            raise Exception('Required attribute \'' + attrname + '\' \
+            raise SkinParseException('Required attribute \'' + attrname + '\' \
             not found.')
         return None
 
@@ -269,7 +270,7 @@ class Skin:
                 return []
             return elem[attrname].split(';')
         elif required:
-            raise Exception('Required attribute \'' + attrname + '\' \
+            raise SkinParseException('Required attribute \'' + attrname + '\' \
             not found.')
         else:
             return []
@@ -281,9 +282,9 @@ class Skin:
             try:
                 return util.parseColorStr(colstr)
             except Exception as e:
-                raise Exception(str(e) + ' ' + self.name)
+                raise SkinParseException(str(e) + ' ' + self.name)
         elif required:
-            raise Exception('Required attribute \'' + attrname + '\' \
+            raise SkinParseException('Required attribute \'' + attrname + '\' \
             not found.')
         return '#000000'
 
@@ -434,7 +435,7 @@ class Skin:
             elif a.direction == RIGHT:
                 adict['@direction'] = 'right'
             else:
-                raise Exception('Element \'analog\' has illegal \'direction\' value')
+                raise SkinParseException('Element \'analog\' has illegal \'direction\' value')
 
             adict['@name'] = a.name
 
@@ -475,6 +476,10 @@ class Skin:
 # ==================================================================#
 
 
+class SkinParseException(Exception):
+    pass
+
+
 class LoadResults:
     def __init__(self):
         self.skins_loaded = []
@@ -489,7 +494,7 @@ def loadAllSkinsFromParentFolder(path):
             continue
         try:
             skins.skins_loaded.append(Skin(os.path.join(path, skindir)))
-        except Exception as e:
+        except SkinParseException as e:
             skins.pare_errors.append(e)
 
     return skins
