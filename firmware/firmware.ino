@@ -7,13 +7,13 @@
 // ---------- Uncomment one of these options to select operation mode --------------
 //#define MODE_GC
 //#define MODE_N64
-#define MODE_MD
-//#define MODE_MD_6BUTTON
+//#define MODE_MD
+#define MODE_MD_6BUTTON
 //#define MODE_SNES
 //#define MODE_NES
 // Bridge one of the analog GND to the right analog IN to enable your selected mode
 //#define MODE_DETECT
-//#define MODE_DETECT_SERIAL // uncomment this to allow serial to send mode information on startup
+#define MODE_DETECT_SERIAL // uncomment this to allow serial to send mode information on startup
 // ---------------------------------------------------------------------------------
 // The only reason you'd want to use 2-wire SNES mode is if you built a NintendoSpy
 // before the 3-wire firmware was implemented.  This mode is for backwards
@@ -30,10 +30,13 @@
 #define WAIT_FALLING_EDGE( pin ) while( !PIN_READ(pin) ); while( PIN_READ(pin) );
 #define WAIT_FALLING_EDGE_B( pin ) while( !PINB_READ(pin) ); while( PINB_READ(pin) );
 
+#define MODEPIN_NONE 256
 #define MODEPIN_SNES 0
 #define MODEPIN_N64  1
 #define MODEPIN_GC   2
-#define MODEPIN_MD 3
+#define MODEPIN_MD   3
+#define MODEPIN_NES  4
+#define MODEPIN_MD_6 5
 
 #define N64_PIN        2
 #define N64_PREFIX     9
@@ -66,7 +69,7 @@ unsigned short mode; // used to store controller mode
 // General initialization, just sets all pins to input and starts serial communication.
 void setup()
 {
-    mode = -1; // underflow mode 
+    mode = MODEPIN_NONE;
     PORTD = 0x00;
     DDRD  = 0x00;
     PORTC = 0xFF; // Set the pull-ups on the port we use to check operation mode.
@@ -258,14 +261,16 @@ inline void loop_MD()
   Serial.write(PIND);
   // wait 60 ms for 6 button inputs if required
  #ifdef MODE_MD_6BUTTON
-  while(digitalRead(MD_SELECT_PIN) != 1) {}
-  while(digitalRead(MD_SELECT_PIN) != 0) {}
-  while(digitalRead(MD_SELECT_PIN) != 1) {}
-  while(digitalRead(MD_SELECT_PIN) != 0) {}
-  while(digitalRead(MD_SELECT_PIN) != 1) {}
-  //delayMicroseconds(5);
-  Serial.write(PIND); // 6 button
-  delayMicroseconds(20);
+  if ( mode == MODEPIN_MD_6 || mode == MODEPIN_NONE ) { 
+    while(digitalRead(MD_SELECT_PIN) != 1) {}
+    while(digitalRead(MD_SELECT_PIN) != 0) {}
+    while(digitalRead(MD_SELECT_PIN) != 1) {}
+    while(digitalRead(MD_SELECT_PIN) != 0) {}
+    while(digitalRead(MD_SELECT_PIN) != 1) {}
+    //delayMicroseconds(5);
+    Serial.write(PIND); // 6 button
+    delayMicroseconds(20);
+  }
  #endif
   Serial.write(SPLIT);
 }
@@ -304,6 +309,8 @@ void loop()
         delay(5); // wait for next transmission
         mode = Serial.parseInt();
         Serial.print('M');
+        Serial.write(mode);
+        Serial.write('\n');
       }
     }
     if( mode == MODEPIN_SNES ) {
@@ -312,10 +319,12 @@ void loop()
         loop_N64();
     } else if( mode == MODEPIN_GC ) {
         loop_GC();
-    } else if( mode == MODEPIN_MD ) {
+    } else if( mode == MODEPIN_MD || mode == MODEPIN_MD_6 ) {
       loop_MD();
-    } else {
+    } else if( mode == MODEPIN_NES ) {
       loop_NES();
+    } else {
+      Serial.println("NO_MODE");
     }
 #endif
 }

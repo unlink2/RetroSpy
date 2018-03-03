@@ -1,5 +1,6 @@
 import os
 import keyboard
+from updater import Updater
 
 ABOUT_TEXT = '\
     Retro Controller input display software\n\
@@ -17,6 +18,13 @@ ABOUT_TEXT = '\
     Email: <lukaskrickl@gmail.com>\n\n\
     Feel free to contribute on <https://github.com/unlink2/RetroSpy/>.\
 '
+
+VERSION_MAJOR = 0
+VERSION_MINOR = 1
+VERSION_PATCH = 0
+
+# global updater
+updater = Updater()
 
 
 def isUserRoot():

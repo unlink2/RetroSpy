@@ -31,12 +31,26 @@ from CommandlineUI import CommandlineUI
 from serial.tools import list_ports
 import argparse
 import util
+from updater import Updater
+
 
 def main():
     SetupWindow()
 
+
 def debugMain(comport, device_type):
     CommandlineUI(comport, device_type=device_type)
+
+
+def cli_update():
+    print('Current version: ', Updater.version_str(), '. Checking for updates...')
+    util.updater.check_update()
+    if util.updater.update_available:
+        print('Update available. Downloading...')
+        util.updater.download()
+        util.updater.restart()
+    else:
+        print('No updates available!')
 
 
 def parseArgs():
@@ -47,6 +61,10 @@ def parseArgs():
     parser.add_argument('--about', dest='about',
                         action='store_true',
                         help='Print out information about the program')
+
+    parser.add_argument('--update', dest='update',
+                        action='store_true',
+                        help='Checks for updates and downloads from command line')
     parser.add_argument('--nox', dest='nox',
                         action='store',
                         help='Turn on command line mode. This will dump all button states to stdout\
@@ -62,6 +80,9 @@ def parseArgs():
 
     if args.about:
         print(util.ABOUT_TEXT)
+    
+    if args.update:
+        cli_update()
 
     if args.nox is None:
         main()

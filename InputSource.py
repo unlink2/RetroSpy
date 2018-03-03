@@ -5,6 +5,9 @@ from SuperNESandNES import SuperNESandNES
 from SerialControllerReader import SerialControllerReader
 from PreviewReader import PreviewReader, PreviewParser
 from KeyboardReader import KeyboardReader, KeyboardParser
+import time
+import sched
+from threading import Thread
 
 
 class InputSource:
@@ -21,23 +24,34 @@ class InputSource:
             self.controllerreader = PreviewReader(PreviewParser.readFromPacket)
         elif self.type_tag == 'nes':
             self.controllerreader = SerialControllerReader(comport, SuperNESandNES.readFromPacket_NES)
-            self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
+            self.schedule_serial_mode(self.type_tag)
         elif self.type_tag == 'snes':
             self.controllerreader = SerialControllerReader(comport, SuperNESandNES.readFromPacket_SNES)
-            self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
+            self.schedule_serial_mode(self.type_tag)
         elif self.type_tag == 'n64':
             self.controllerreader = SerialControllerReader(comport, Nintendo64.readFromPacket)
-            self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
+            self.schedule_serial_mode(self.type_tag)
         elif self.type_tag == 'gamecube':
             self.controllerreader = SerialControllerReader(comport, GameCube.readFromPacket)
-            self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
+            self.schedule_serial_mode(self.type_tag)
         elif self.type_tag == 'megadrive':
             self.controllerreader = SerialControllerReader(comport, MegaDrive.readFromPacket)
-            self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
+            self.schedule_serial_mode(self.type_tag)
+        elif self.type_tag == 'megadrive6':
+            self.controllerreader = SerialControllerReader(comport, MegaDrive.readFromPacket)
+            self.schedule_serial_mode(self.type_tag)
         elif self.type_tag == 'keyboard':
             self.controllerreader = KeyboardReader(KeyboardParser.readFromPacket)
         else:
             raise Exception('Unable to make build reader')
+
+    def schedule_serial_mode(self, type_tag):
+        self.thread = Thread(target=self.send_serial_mode, args=(type_tag,))
+        self.thread.start()
+
+    def send_serial_mode(self, type_tag):
+        time.sleep(2)
+        self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
 
     @staticmethod
     def makeInputSource(type_tag):
@@ -51,7 +65,9 @@ class InputSource:
             elif type_tag == 'gamecube':
                 return InputSource(type_tag, 'GameCube', True, False, None)
             elif type_tag == 'megadrive':
-                return InputSource('megadrive', 'MegaDrive', True, False, None)
+                return InputSource('megadrive', 'MegaDrive3 Button', True, False, None)
+            elif type_tag == 'megadrive6':
+                return InputSource('megadrive6', 'MegaDrive 6 Button', True, False, None)
             elif type_tag == 'preview':
                 return InputSource('preview', 'Preview', False, False, None)
             elif type_tag == 'keyboard':
@@ -60,5 +76,5 @@ class InputSource:
         return None  # return None in case of fail
 
 
-InputSource.ALL = ['nes', 'snes', 'n64', 'gamecube', 'megadrive', 'preview', 'keyboard']
-InputSource.ARDUINO_MODEPINS = {'nes': 4, 'snes': 0, 'n64': 1, 'gamecube': 2, 'megadrive': 3}
+InputSource.ALL = ['nes', 'snes', 'n64', 'gamecube', 'megadrive', 'preview', 'keyboard', 'megadrive6']
+InputSource.ARDUINO_MODEPINS = {'nes': 4, 'snes': 0, 'n64': 1, 'gamecube': 2, 'megadrive': 3, 'megadrive6': 5}

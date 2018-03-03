@@ -106,14 +106,18 @@ class Skin:
         self.load()
 
     def load(self):
-        cwd = os.getcwd()
         skinpath = self.skinpath
         if not Path(os.path.join(skinpath, 'skin.xml')).exists():
             raise SkinParseException("Could not find skin.xml for skin at " + skinpath)
 
+        doc = {'skin': {}}
         with open(os.path.join(skinpath, 'skin.xml')) as fd:
             doc = xmltodict.parse(fd.read())
 
+        self.load_xml_dict(doc)
+
+    def load_xml_dict(self, doc):
+        skinpath = self.skinpath
         self.name = self.readStringAttr(doc['skin'], '@name')
         self.author = self.readStringAttr(doc['skin'], '@author')
 
@@ -349,7 +353,10 @@ class Skin:
     def write_to_xml(self, path=None):
         if path is None:
             path = self.skinpath
+        with open(os.path.join(path, 'skin.xml'), 'w') as fd:
+            fd.write(self.skin_to_xml_string)
 
+    def skin_to_xml_string(self):
         # empty skin xml
         doc = {'skin': {
             '@author': self.author,
@@ -451,8 +458,7 @@ class Skin:
 
             doc['skin']['analog'].append(adict)
 
-        with open(os.path.join(path, 'skin.xml'), 'w') as fd:
-            fd.write(xmltodict.unparse(doc, pretty=True))
+        return xmltodict.unparse(doc, pretty=True)
 
     def default_config_to_dict(self, element):
         dc = element.config
