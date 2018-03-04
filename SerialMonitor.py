@@ -18,7 +18,7 @@ from axel import Event
 
 class SerialMonitor:
     def __init__(self, serial_port='/dev/ttyACM0', baud_rate=115200,
-                 timer_ms=30):
+                 timer_ms=10):
         self.baud_rate = baud_rate
         self.serial_port = serial_port
         self.timer_ms = timer_ms
@@ -27,8 +27,8 @@ class SerialMonitor:
         self._localBuffer = []
 
         #  establish connection
-        self._datPort = serial.Serial(serial_port, baud_rate)
-        self._datPort.timeout = timer_ms
+        self._datPort = serial.Serial(serial_port, baud_rate, timeout=timer_ms)
+        # self._datPort.timeout = timer_ms
 
         self.packet_recv = Event()
         self.disconnected = Event()
@@ -37,6 +37,8 @@ class SerialMonitor:
         pass
 
     def stop(self):
+        if not self._datPort.is_open:
+            return
         self._datPort.close()
 
     def serial_read(self, bytes=16):
@@ -68,6 +70,8 @@ class SerialMonitor:
         return s
 
     def set_pin_mode(self, pin_number, mode):
+        if not self._datPort.is_open:
+            return
         """
         Performs a pinMode() operation on pin_number
         Internally sends b'M{mode}{pin_number} where mode could be:
@@ -79,9 +83,13 @@ class SerialMonitor:
         self._datPort.write(command)
 
     def serial_write(self, data):
+        if not self._datPort.is_open:
+            return
         self._datPort.write(data.encode())
 
     def digital_write(self, pin, value):
+        if not self._datPort.is_open:
+            return
         """
         Writes the digital_value on pin_number
         Internally sends b'WD{pin_number}:{digital_value}' over the serial
@@ -93,6 +101,8 @@ class SerialMonitor:
 
     # this function performs a read on any pin. This is used for debugging
     def digital_read(self, pin):
+        if not self._datPort.is_open:
+            return 0
         command = (''.join(('RD', str(pin)))).encode()
 
         self._datPort.write(command)
@@ -104,3 +114,6 @@ class SerialMonitor:
                 # returns string of all pins in order
                 return value
             return int(value)
+
+    def is_open(self):
+        return self._datPort.is_open

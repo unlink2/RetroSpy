@@ -50,7 +50,9 @@ class InputSource:
         self.thread.start()
 
     def send_serial_mode(self, type_tag):
-        time.sleep(2)
+        time.sleep(2.5)
+        while not self.controllerreader.serial.is_open():
+            pass
         self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
 
     @staticmethod
