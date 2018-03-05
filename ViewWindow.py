@@ -73,6 +73,11 @@ class ViewWindow:
         self.addAnalogTriggers()
         self.addRangebuttons()
 
+    # override this to get callback whenever the canvas was clicked
+    # event.x event.y are click coordinates
+    def on_canvas_click(self, event):
+        pass
+
     def on_close(self):
         self.root.deiconify()
         self.window.destroy()
@@ -81,6 +86,8 @@ class ViewWindow:
 
     def makeCanvas(self, w, h):
         self.cv = tk.Canvas(self.window, width=w, height=h)
+        # Button-1 is mouse1
+        self.cv.bind('<Button-1>', self.on_canvas_click)
         self.cv.pack()
 
     def addBackground(self):

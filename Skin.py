@@ -354,7 +354,7 @@ class Skin:
         if path is None:
             path = self.skinpath
         with open(os.path.join(path, 'skin.xml'), 'w') as fd:
-            fd.write(self.skin_to_xml_string)
+            fd.write(self.skin_to_xml_string())
 
     def skin_to_xml_string(self):
         # empty skin xml
@@ -476,6 +476,35 @@ class Skin:
             d['@onkeydown'] = dc.on_keydown
 
         return d
+
+    # returns class, type string
+    def get_element(self, name):
+        # loop all types
+        for i in self.backgrounds:
+            if i.name == name:
+                return i, 'background'
+
+        for i in self.buttons:
+            if i.name == name:
+                return i, 'button'
+
+        for i in self.analogsticks:
+            if i.name == name:
+                return i, 'stick'
+
+        for i in self.analogtriggers:
+            if i.name == name:
+                return i, 'trigger'
+
+        for i in self.rangebuttons:
+            if i.name == name:
+                return i, 'rangebutton'
+
+        for i in self.details:
+            if i.name == name:
+                return i, 'detail'
+
+        return None, ''
 
 # ==================================================================#
 # Helper function/calss                                             #

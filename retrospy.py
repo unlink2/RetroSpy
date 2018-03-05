@@ -80,7 +80,7 @@ def parseArgs():
 
     if args.about:
         print(util.ABOUT_TEXT)
-    
+
     if args.update:
         cli_update()
 

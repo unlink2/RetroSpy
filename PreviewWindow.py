@@ -28,7 +28,17 @@ class PreviewWindow(ViewWindow):
         rskb = tk.Button(self.edit_window, text='reload skin', command=self.reload_skin_pressed)
         rskb.pack()
 
+        selb = tk.Button(self.edit_window, text='select', command=self.select_pressed)
+        selb.pack()
+
+        saveb = tk.Button(self.edit_window, text='save', command=self.save_pressed)
+        saveb.pack()
+
         self.edit_window.protocol('WM_DELETE_WINDOW', self.on_close)
+
+        self.current_select = None
+        self.current_select_type = ''
+        self.current_select_key = ''
 
         self.preview_data = {}
         self.preview_update()
@@ -44,6 +54,39 @@ class PreviewWindow(ViewWindow):
         self.skin.type.controllerreader.update(self.preview_data)
 
         self.window.after(1, self.preview_update)
+
+    def select_pressed(self):
+        key = self.keyentry.get()
+        self.current_select_key = key
+        self.current_select, self.current_select_type = self.skin.get_element(key)
+
+    def save_pressed(self):
+        self.skin.write_to_xml()
+
+    def on_canvas_click(self, event):
+        if self.current_select is None:
+            return
+
+        self.current_select.config.x = event.x
+        self.current_select.config.y = event.y
+
+        # check which thing to move on screen
+        to_move = None
+        if self.current_select_type == 'button':
+            to_move = self.buttons[self.current_select_key]
+        elif self.current_select_type == 'detail':
+            to_move = self.details[self.current_select_key]
+        elif self.current_select_type == 'stick':
+            to_move = self.analogsticks[self.current_select_key]
+        elif self.current_select_type == 'trigger':
+            to_move = self.analogtriggers[self.current_select_key]
+        elif self.current_select_type == 'rangebutton':
+            to_move = self.analogtriggers[self.current_select_key]
+
+        if to_move is None:
+            return
+        self.cv.coords(self.current_select_key, event.x, event.y)
+
 
     def reload_skin_pressed(self):
         self.skin.load()
