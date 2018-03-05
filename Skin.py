@@ -489,7 +489,7 @@ class Skin:
                 return i, 'button'
 
         for i in self.analogsticks:
-            if i.name == name:
+            if i.xname == name or i.yname == name:
                 return i, 'stick'
 
         for i in self.analogtriggers:
