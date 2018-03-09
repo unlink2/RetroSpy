@@ -67,9 +67,6 @@ class PreviewWindow(ViewWindow):
         if self.current_select is None:
             return
 
-        self.current_select.config.x = event.x
-        self.current_select.config.y = event.y
-
         # check which thing to move on screen
         to_move = None
         if self.current_select_type == 'button':
@@ -85,7 +82,13 @@ class PreviewWindow(ViewWindow):
 
         if to_move is None:
             return
-        self.cv.coords(self.current_select_key, event.x, event.y)
+
+        # center image
+        x = event.x - self.current_select.config.width / 2
+        y = event.y - self.current_select.config.height / 2
+        self.current_select.config.x = x
+        self.current_select.config.y = y
+        self.cv.coords(self.current_select_key, x, y)
 
 
     def reload_skin_pressed(self):
