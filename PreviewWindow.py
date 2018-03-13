@@ -53,7 +53,7 @@ class PreviewWindow(ViewWindow):
 
         self.skin.type.controllerreader.update(self.preview_data)
 
-        self.window.after(1, self.preview_update)
+        self.window.after(self.update_interval, self.preview_update)
 
     def select_pressed(self):
         key = self.keyentry.get()

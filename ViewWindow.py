@@ -15,6 +15,8 @@ class ViewWindow:
         self.is_open = True
         self.preview = preview
 
+        self.update_interval = 3
+
         try:
             self.make_reader()
         except SerialException as e:
@@ -231,7 +233,7 @@ class ViewWindow:
         except SerialException as e:
             tk.messagebox.showerror("Error", str(e))
             return
-        self.window.after(1, self.update)
+        self.window.after(self.update_interval, self.update)
 
         # go through states and check what to do
         for key in self.state.buttons:
