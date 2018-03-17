@@ -1,7 +1,6 @@
 from ControllerReader import ControllerReader
 from SerialMonitor import SerialMonitor
 from axel import Event
-import threading
 
 class SerialControllerReader(ControllerReader):
     def __init__(self, portname, packet_parser):
@@ -27,4 +26,4 @@ class SerialControllerReader(ControllerReader):
         self.serial.stop()
 
     def update(self, data=None):
-        target=self.serial.serial_read()
+        self.serial.serial_read()
