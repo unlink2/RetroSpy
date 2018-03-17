@@ -7,7 +7,6 @@ from inputs import get_gamepad
 from inputs import get_mouse
 from inputs import UnpluggedError
 from inputs import devices
-import threading
 
 class KeyboardReader(ControllerReader):
     def __init__(self, comport, packet_parser):
@@ -30,7 +29,7 @@ class KeyboardReader(ControllerReader):
         self.monitor.finish()
 
     def update(self, data=None):
-        target=self.monitor.update()
+        self.monitor.update()
 
     def packetrecv(self, packet):
         state = self.packet_parser(self, packet)
