@@ -2,24 +2,35 @@ import keyboard
 from ControllerReader import ControllerReader
 from axel import Event
 from ControllerState import ControllerStateBuilder
-
+from inputs import get_key
+from inputs import get_gamepad
+from inputs import get_mouse
+from inputs import UnpluggedError
+from inputs import devices
+import threading
 
 class KeyboardReader(ControllerReader):
-    def __init__(self, packet_parser):
+    def __init__(self, comport, packet_parser):
         self.controllerstate = Event()
         self.controllerdisconnected = Event()
 
         self.packet_parser = packet_parser
+        self.comport = comport
 
-        self.monitor = KeyboardMonitor()
+        self.monitor = KeyboardMonitor(comport)
         self.monitor.packet_recv += self.packetrecv
         self.monitor.controllerdisconnected += self.finish
 
+        keyboard.press_and_release('a')
+
+        self.t = None
+
     def finish(self):
+        keyboard.press_and_release('a')
         self.monitor.finish()
 
     def update(self, data=None):
-        pass
+        target=self.monitor.update()
 
     def packetrecv(self, packet):
         state = self.packet_parser(self, packet)
@@ -27,15 +38,54 @@ class KeyboardReader(ControllerReader):
 
 
 class KeyboardMonitor:
-    def __init__(self):
+    def __init__(self, comport):
+        self.comport = comport
         self.packet_recv = Event()
         self.controllerdisconnected = Event()
         # all keyevents are hooked here
-        keyboard.on_press(callback=self.on_down)
-        keyboard.on_release(callback=self.on_release)
+        if self.comport == 'keyboard_legacy':
+            keyboard.on_press(callback=self.on_down)
+            keyboard.on_release(callback=self.on_release)
 
         self.buffer = {}
 
+    def update(self):
+        if self.comport == 'keyboard_legacy':
+            return
+        try:
+            kb_event = None
+            for d in devices.keyboards:
+                if d._device_path == self.comport:
+                    kb_event = d.read()
+
+            if kb_event is None:
+                kb_event = get_key()
+
+            for e in kb_event:
+                val = False
+                if e.state > 0:
+                    val = True
+                if e.ev_type == 'Key':
+                    self.on_key_data({'type': 'button', 'name': e.code, 'val': val})
+
+            #mouse_event = get_mouse()
+            #for e in mouse_event:
+            #    print(e.ev_type, e.code, e.state)
+
+            #controller_event = get_gamepad()
+
+            #for e in controller_event:
+            #    print(e.ev_type, e.code, e.state)
+        except UnpluggedError as e:
+            print(e)
+
+    def on_key_data(self, data):
+        if data is None:
+            return
+        self.buffer[data['name']] = {'type': data['type'], 'name': data['name'], 'val': data['val']}
+        self.packet_recv(self.buffer)
+
+    # deprecated
     # data always is a dict of type, name, val
     def on_down(self, data):
         if data is None:
@@ -43,6 +93,7 @@ class KeyboardMonitor:
         self.buffer[data.name] = {'type': 'button', 'name': data.name, 'val': True}
         self.packet_recv(self.buffer)
 
+    # deprecated
     def on_release(self, data):
         if data is None:
             return
@@ -50,7 +101,8 @@ class KeyboardMonitor:
         self.packet_recv(self.buffer)
 
     def finish(self):
-        keyboard.unhook_all()
+        if self.comport == 'keyboard_legacy':
+            keyboard.unhook_all()
 
 
 class KeyboardParser:

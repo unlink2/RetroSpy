@@ -9,7 +9,7 @@ from ViewWindow import ViewWindow
 from PreviewWindow import PreviewWindow
 from AboutWindow import AboutWindow
 from util import isUserRoot
-
+from inputs import devices
 
 class SetupWindow:
     def __init__(self):
@@ -136,6 +136,18 @@ class SetupWindow:
         self.comports = list_ports.comports()
         for p in self.comports:
             menu.add_command(label=p.device, command=lambda v=p.device: self.portmenuvar.set(v))
+
+        for d in devices.keyboards:
+            menu.add_command(label=d._device_path, command=lambda v=d._device_path: self.portmenuvar.set(v))
+
+        for d in devices.mice:
+            menu.add_command(label=d._device_path, command=lambda v=d._device_path: self.portmenuvar.set(v))
+
+        for d in devices.gamepads:
+            menu.add_command(label=d._device_path, command=lambda v=d._device_path: self.portmenuvar.set(v))
+
+        # add legacy keyboard option
+        # menu.add_command(label='legacy_keyboard', command=lambda v='legacy_keyboard': self.portmenuvar.set(v))
 
         if self.portmenuvar.get() == '' and len(self.comports) > 0:
             self.portmenuvar.set(self.comports[0].device)

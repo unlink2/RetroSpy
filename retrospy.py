@@ -32,7 +32,7 @@ from serial.tools import list_ports
 import argparse
 import util
 from updater import Updater
-
+from inputs import devices
 
 def main():
     SetupWindow()
@@ -77,6 +77,13 @@ def parseArgs():
         print("Available com ports: ")
         for p in ports:
             print(p)
+        print('Available input devices: ')
+        for d in devices.keyboards:
+            print(d._device_path)
+        for d in devices.mice:
+            print(d._device_path)
+        for d in devices.gamepads:
+            print(d._device_path)
 
     if args.about:
         print(util.ABOUT_TEXT)

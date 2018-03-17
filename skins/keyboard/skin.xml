@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin name="Default Keyboard" author="unlink" type="keyboard">
+
+    <background name="US" image="keyboard.png" />
+
+    <button name="KEY_GRAVE" image="pressed.png" x="10" y="10" width="42" height="42" />
+    <button name="KEY_1" image="pressed.png" x="70" y="10" width="42" height="42" />
+    <button name="KEY_2" image="pressed.png" x="130" y="10" width="42" height="42" />
+    <button name="KEY_3" image="pressed.png" x="190" y="10" width="42" height="42" />
+    <button name="KEY_4" image="pressed.png" x="250" y="10" width="42" height="42" />
+    <button name="KEY_5" image="pressed.png" x="310" y="10" width="42" height="42" />
+    <button name="KEY_6" image="pressed.png" x="370" y="10" width="42" height="42" />
+    <button name="KEY_7" image="pressed.png" x="430" y="10" width="42" height="42" />
+    <button name="KEY_8" image="pressed.png" x="490" y="10" width="42" height="42" />
+    <button name="KEY_9" image="pressed.png" x="550" y="10" width="42" height="42" />
+    <button name="KEY_0" image="pressed.png" x="610" y="10" width="42" height="42" />
+    <button name="MEY_MINUS" image="pressed.png" x="670" y="10" width="42" height="42" />
+    <button name="KEY_EQUAL" image="pressed.png" x="730" y="10" width="42" height="42" />
+    <button name="KEY_BACKSPACE" image="pressed.png" x="790" y="10" width="42" height="42" />
+
+    <button name="KEY_TAB" image="pressed.png" x="31" y="65" width="42" height="42" />
+    <button name="KEY_Q" image="pressed.png" x="93" y="65" width="42" height="42" />
+    <button name="KEY_W" image="pressed.png" x="155" y="65" width="42" height="42" />
+    <button name="KEY_E" image="pressed.png" x="217" y="65" width="42" height="42" />
+    <button name="KEY_R" image="pressed.png" x="279" y="65" width="42" height="42" />
+    <button name="KEY_T" image="pressed.png" x="341" y="65" width="42" height="42" />
+    <button name="KEY_Y" image="pressed.png" x="403" y="65" width="42" height="42" />
+    <button name="KEY_U" image="pressed.png" x="462" y="65" width="42" height="42" />
+    <button name="KEY_I" image="pressed.png" x="524" y="65" width="42" height="42" />
+    <button name="KEY_O" image="pressed.png" x="584" y="65" width="42" height="42" />
+    <button name="KEY_P" image="pressed.png" x="647" y="65" width="42" height="42" />
+    <button name="KEY_LEFTBRACE" image="pressed.png" x="708" y="65" width="42" height="42" />
+    <button name="KEY_RIGHTBRACE" image="pressed.png" x="765" y="65" width="42" height="42" />
+    <button name="KEY_BACKSLASH" image="pressed.png" x="827" y="65" width="42" height="42" />
+
+    <button name="KEY_CAPSLOCK" image="pressed.png" x="52" y="127" width="42" height="42" />
+    <button name="KEY_A" image="pressed.png" x="114" y="127" width="42" height="42" />
+    <button name="KEY_S" image="pressed.png" x="176" y="127" width="42" height="42" />
+    <button name="KEY_D" image="pressed.png" x="236" y="127" width="42" height="42" />
+    <button name="KEY_F" image="pressed.png" x="295" y="127" width="42" height="42" />
+    <button name="KEY_G" image="pressed.png" x="357" y="127" width="42" height="42" />
+    <button name="KEY_H" image="pressed.png" x="416" y="127" width="42" height="42" />
+    <button name="KEY_J" image="pressed.png" x="474" y="127" width="42" height="42" />
+    <button name="KEY_K" image="pressed.png" x="536" y="127" width="42" height="42" />
+    <button name="KEY_L" image="pressed.png" x="598" y="127" width="42" height="42" />
+    <button name="KEY_SEMICOLON" image="pressed.png" x="660" y="127" width="42" height="42" />
+    <button name="KEY_APOSTROPHE" image="pressed.png" x="720" y="127" width="42" height="42" />
+    <button name="KEY_ENTER" image="pressed.png" x="780" y="127" width="42" height="42" />
+
+    <button name="KEY_LEFTSHIFT" image="pressed.png" x="84" y="185" width="42" height="42" />
+    <button name="KEY_Z" image="pressed.png" x="144" y="185" width="42" height="42" />
+    <button name="KEY_X" image="pressed.png" x="206" y="185" width="42" height="42" />
+    <button name="KEY_C" image="pressed.png" x="268" y="185" width="42" height="42" />
+    <button name="KEY_V" image="pressed.png" x="328" y="185" width="42" height="42" />
+    <button name="KEY_B" image="pressed.png" x="384" y="185" width="42" height="42" />
+    <button name="KEY_N" image="pressed.png" x="446" y="185" width="42" height="42" />
+    <button name="KEY_M" image="pressed.png" x="506" y="185" width="42" height="42" />
+    <button name="KEY_COMMA" image="pressed.png" x="566" y="185" width="42" height="42" />
+    <button name="KEY_DOT" image="pressed.png" x="626" y="185" width="42" height="42" />
+    <button name="KEY_SLASH" image="pressed.png" x="686" y="185" width="42" height="42" />
+    <button name="KEY_RIGHTSHIFT" image="pressed.png" x="748" y="185" width="42" height="42" />
+
+    <button name="KEY_LEFTCTRL" image="pressed.png" x="15" y="245" width="42" height="42" />
+    <button name="KEY_LEFTMETA" image="pressed.png" x="95" y="245" width="42" height="42" />
+    <button name="KEY_LEFTALT" image="pressed.png" x="165" y="245" width="42" height="42" />
+    <button name="KEY_SPACE" image="pressed.png" x="385" y="245" width="42" height="42" />
+    <button name="KEY_RIGHTALT" image="pressed.png" x="615" y="245" width="42" height="42" />
+    <button name="KEY_RIGHTMETA" image="pressed.png" x="693" y="245" width="42" height="42" />
+    <button name="KEY_COMPOSE" image="pressed.png" x="755" y="245" width="42" height="42" />
+    <button name="KEY_RIGHTCTRL" image="pressed.png" x="825" y="245" width="42" height="42" />
+</skin>

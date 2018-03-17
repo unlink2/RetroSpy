@@ -41,7 +41,9 @@ class InputSource:
             self.controllerreader = SerialControllerReader(comport, MegaDrive.readFromPacket)
             self.schedule_serial_mode(self.type_tag)
         elif self.type_tag == 'keyboard':
-            self.controllerreader = KeyboardReader(KeyboardParser.readFromPacket)
+            self.controllerreader = KeyboardReader(comport, KeyboardParser.readFromPacket)
+        elif self.type_tag == 'keyboard_legacy':
+            self.controllerreader = KeyboardReader('keyboard_legacy', KeyboardParser.readFromPacket)
         else:
             raise Exception('Unable to make build reader')
 
@@ -74,9 +76,11 @@ class InputSource:
                 return InputSource('preview', 'Preview', False, False, None)
             elif type_tag == 'keyboard':
                 return InputSource('keyboard', 'Keyboard', False, False, None)
+            elif type_tag == 'keyboard_legacy':
+                return InputSource('keyboard_legacy', 'Keyboard Legacy', False, False, None)
 
         return None  # return None in case of fail
 
 
-InputSource.ALL = ['nes', 'snes', 'n64', 'gamecube', 'megadrive', 'preview', 'keyboard', 'megadrive6']
+InputSource.ALL = ['nes', 'snes', 'n64', 'gamecube', 'megadrive', 'preview', 'keyboard', 'keyboard_legacy', 'megadrive6']
 InputSource.ARDUINO_MODEPINS = {'nes': 4, 'snes': 0, 'n64': 1, 'gamecube': 2, 'megadrive': 3, 'megadrive6': 5}
