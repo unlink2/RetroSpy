@@ -8,7 +8,7 @@ from KeyboardReader import KeyboardReader, KeyboardParser
 import time
 import sched
 from threading import Thread
-
+from GenericController import GenericControllerReader, GenericControllerParser
 
 class InputSource:
     def __init__(self, type_tag, name, requries_comport, requires_id, controllerreader):
@@ -44,6 +44,8 @@ class InputSource:
             self.controllerreader = KeyboardReader(comport, KeyboardParser.readFromPacket)
         elif self.type_tag == 'keyboard_legacy':
             self.controllerreader = KeyboardReader('keyboard_legacy', KeyboardParser.readFromPacket)
+        elif self.type_tag == 'generic':
+            self.controllerreader = GenericControllerReader(comport, GenericControllerParser.readFromPacket)
         else:
             raise Exception('Unable to make build reader')
 
@@ -78,9 +80,11 @@ class InputSource:
                 return InputSource('keyboard', 'Keyboard', False, False, None)
             elif type_tag == 'keyboard_legacy':
                 return InputSource('keyboard_legacy', 'Keyboard Legacy', False, False, None)
+            elif type_tag == 'generic':
+                return InputSource('generic', 'Generic Gamepad', False, False, None)
 
         return None  # return None in case of fail
 
 
-InputSource.ALL = ['nes', 'snes', 'n64', 'gamecube', 'megadrive', 'preview', 'keyboard', 'keyboard_legacy', 'megadrive6']
+InputSource.ALL = ['nes', 'snes', 'n64', 'gamecube', 'megadrive', 'preview', 'generic', 'keyboard', 'keyboard_legacy', 'megadrive6']
 InputSource.ARDUINO_MODEPINS = {'nes': 4, 'snes': 0, 'n64': 1, 'gamecube': 2, 'megadrive': 3, 'megadrive6': 5}

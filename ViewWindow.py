@@ -52,7 +52,7 @@ class ViewWindow:
 
         self.window.protocol('WM_DELETE_WINDOW', self.on_close)
 
-        self.update()
+        self.window.after(1000, self.update)
 
     def make_reader(self):
         self.skin.type.makeControllerReader(comport=self.comport, preview=self.preview)
@@ -246,6 +246,24 @@ class ViewWindow:
                         util.sendKeyToOS(self.buttons[key]['cfg'].config.on_keydown)
                 else:
                     self.cv.itemconfigure(self.buttons[key]['mob'], state=tk.HIDDEN)
+
+        for key in self.state.analogs:
+            keyorg = key
+            if self.state.analogs[key] < 0:
+                key = key + '_'
+
+            if key in self.rangebuttons.keys():
+                cfg = self.rangebuttons[key]['cfg']
+                if cfg.fromF <= self.state.analogs[keyorg] <= cfg.toF:
+                    self.cv.itemconfigure(self.rangebuttons[key]['mob'], state=tk.NORMAL)
+
+                    if self.rangebuttons[key]['cfg'].config.on_keydown is not None:
+                        util.sendKeyToOS(self.rangebuttons[key]['cfg'].config.on_keydown)
+                else:
+                    if key+'_' in self.rangebuttons.keys():
+                        self.cv.itemconfigure(self.rangebuttons[key+'_']['mob'], state=tk.HIDDEN)
+                    if keyorg in self.rangebuttons.keys():
+                        self.cv.itemconfigure(self.rangebuttons[keyorg]['mob'], state=tk.HIDDEN)
 
         for key in self.state.analogs:
             if key in self.analogsticks:

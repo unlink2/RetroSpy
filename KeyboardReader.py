@@ -20,12 +20,9 @@ class KeyboardReader(ControllerReader):
         self.monitor.packet_recv += self.packetrecv
         self.monitor.controllerdisconnected += self.finish
 
-        keyboard.press_and_release('a')
-
         self.t = None
 
     def finish(self):
-        keyboard.press_and_release('a')
         self.monitor.finish()
 
     def update(self, data=None):
