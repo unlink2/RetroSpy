@@ -1,4 +1,4 @@
-#RetroSpy
+# RetroSpy
 
 This is a port of [NintendoSpy](https://github.com/jaburns/NintendoSpy) to make it multiplatform.
 
@@ -13,9 +13,8 @@ Current implementation status:
    Nintend 64: Working correctly
    GameCube: Working correctly
    XInput: Not implemented
-   Generic Controller: Not implemented
-   Keyboard: Testing (Requires root on linux!)
-
+   Generic Controller: partly implemented (Trigger buttons are not compatible)
+   Keyboard: Implemented
 
 
 It depends on python 3.X and the following libraries
@@ -25,6 +24,7 @@ It depends on python 3.X and the following libraries
     pip install xmltodict
     pip install axel
     pip install keyboard
+    pip install inputs
 
 New skin tag:
 Buttons can have an onkeydown attribute with a key combination.
