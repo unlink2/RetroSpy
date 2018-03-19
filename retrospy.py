@@ -48,9 +48,9 @@ def cli_update():
     print('Current version: ', Updater.version_str(), '. Checking for updates...')
     util.updater.check_update()
     if util.updater.update_available:
-        print('Update available. Downloading...')
-        util.updater.download()
-        util.updater.restart()
+        print('Update available on: ', util.updater.update_url, ' version: ', util.updater.new_ver)
+        # util.updater.download()
+        # util.updater.restart()
     else:
         print('No updates available!')
 

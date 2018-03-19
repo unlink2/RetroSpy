@@ -10,6 +10,9 @@ from PreviewWindow import PreviewWindow
 from AboutWindow import AboutWindow
 from util import isUserRoot
 from inputs import devices
+import util
+import webbrowser
+
 
 class SetupWindow:
     def __init__(self):
@@ -52,8 +55,16 @@ class SetupWindow:
 
         self.root.after(100, self.update)
         self.root.after(1000, self.portListUpdater)
+        self.check_update()
 
         self.root.mainloop()
+
+    def check_update(self):
+        util.updater.check_update()
+        if util.updater.update_available:
+            result = tk.messagebox.askquestion('Update available', 'Would you like to download it?')
+            if result == 'yes':
+                webbrowser.open(util.updater.update_url)
 
     def goPressed(self):
         # make sure a selection has been made!

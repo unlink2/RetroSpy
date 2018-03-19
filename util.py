@@ -22,6 +22,7 @@ ABOUT_TEXT = '\
 VERSION_MAJOR = 0
 VERSION_MINOR = 1
 VERSION_PATCH = 0
+UPDATE_URL = 'http://vps.krickl.me/retrospy.txt'
 
 # global updater
 updater = Updater()
