@@ -19,6 +19,7 @@ ABOUT_TEXT = '\
     Feel free to contribute on <https://github.com/unlink2/RetroSpy/>.\
 '
 
+APPLICATION_NAME = 'RetroSpy'
 VERSION_MAJOR = 0
 VERSION_MINOR = 1
 VERSION_PATCH = 0

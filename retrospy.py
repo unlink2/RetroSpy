@@ -34,6 +34,7 @@ import util
 from updater import Updater
 from inputs import devices
 import sys
+import os
 
 
 def main():
@@ -64,14 +65,18 @@ def parseArgs():
                         action='store_true',
                         help='Print out information about the program')
 
+    parser.add_argument('--version', dest='version', action='store_true', help='Displays version')
+
     parser.add_argument('--update', dest='update',
                         action='store_true',
                         help='Checks for updates and downloads from command line')
-    parser.add_argument('--nox', dest='nox',
+    parser.add_argument('--dump', dest='dump',
                         action='store',
                         help='Turn on command line mode. This will dump all button states to stdout\
-                        Usage: --nox <comport> <device type>',
+                        Usage: --dump <comport> <device type>',
                         nargs=2)
+
+    parser.add_argument('--nox', dest='nox', action='store_true', help='Prevents GUI from opening')
 
     args = parser.parse_args()
     if args.ports:
@@ -82,21 +87,27 @@ def parseArgs():
         print('Available input devices: ')
         for d in devices.keyboards:
             print(d._device_path)
-        for d in devices.mice:
-            print(d._device_path)
+        #for d in devices.mice:
+        #    print(d._device_path)
+        print('Available gamepads: ')
         for d in devices.gamepads:
             print(d._device_path)
 
     if args.about:
         print(util.ABOUT_TEXT)
 
+    if args.version:
+        print(util.APPLICATION_NAME, ' version ', Updater.version_str())
+        print('Reported OS: ', os.name)
+        print('Reported python version: ', sys.version)
+
     if args.update:
         cli_update()
 
-    if args.nox is None:
+    if not args.nox:
         main()
-    else:
-        debugMain(args.nox[0], args.nox[1])
+    if args.dump is not None:
+        debugMain(args.dump[0], args.dump[1])
 
 
 parseArgs()
