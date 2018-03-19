@@ -38,6 +38,7 @@ class KeyboardMonitor:
     def __init__(self, comport):
         self.comport = comport
         self.packet_recv = Event()
+        self.onerror = Event()
         self.controllerdisconnected = Event()
         # all keyevents are hooked here
         if self.comport == 'keyboard_legacy':

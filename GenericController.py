@@ -8,6 +8,7 @@ from inputs import UnpluggedError
 from inputs import devices
 from inputs import UnknownEventCode
 
+
 class GenericControllerReader(ControllerReader):
     def __init__(self, comport, packet_parser):
         self.controllerstate = Event()
@@ -20,6 +21,7 @@ class GenericControllerReader(ControllerReader):
         self.monitor = GenericControllerMonitor(comport)
         self.monitor.packet_recv += self.packetrecv
         self.monitor.controllerdisconnected += self.finish
+        self.monitor.onerror += self.on_error
 
         self.t = None
 
@@ -27,17 +29,23 @@ class GenericControllerReader(ControllerReader):
         self.monitor.finish()
 
     def update(self, data=None):
-        self.monitor.update()
+        try:
+            self.monitor.update()
+        except OSError as e:
+            self.onerror(self, e)
 
     def packetrecv(self, packet):
         state = self.packet_parser(self, packet)
         self.controllerstate(self, state)
 
+    def on_error(self, err):
+        self.onerror(self, err)
 
 class GenericControllerMonitor:
     def __init__(self, comport):
         self.comport = comport
         self.packet_recv = Event()
+        self.onerror = Event()
         self.controllerdisconnected = Event()
 
         self.buffer = {}
@@ -62,7 +70,7 @@ class GenericControllerMonitor:
                     self.on_key_data({'type': 'stick', 'name': e.code, 'val': e.state})
 
         except UnpluggedError as e:
-            print(e)
+            self.onerror(e)
         except UnknownEventCode as e:
             # print(e)
             self.buffer = {}
@@ -75,6 +83,7 @@ class GenericControllerMonitor:
 
     def finish(self):
         pass
+
 
 class GenericControllerParser:
     @staticmethod
@@ -122,6 +131,7 @@ class GenericControllerParser:
                     state.setAnalog('ry', GenericControllerParser.readStick(p['val']))
 
         return state.build()
+
 
 GENERIC_CONTROLLER_BTN = {
     'BTN_THUMB': 'b0',

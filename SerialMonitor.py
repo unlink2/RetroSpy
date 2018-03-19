@@ -32,6 +32,7 @@ class SerialMonitor:
 
         self.packet_recv = Event()
         self.disconnected = Event()
+        self.onerror = Event()
 
     def start(self):
         pass
