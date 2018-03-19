@@ -35,6 +35,7 @@ from updater import Updater
 from inputs import devices
 import sys
 import os
+from InputSource import InputSource
 
 
 def main():
@@ -92,6 +93,9 @@ def parseArgs():
         print('Available gamepads: ')
         for d in devices.gamepads:
             print(d._device_path)
+        print('Available input modes: ')
+        for d in InputSource.ALL:
+            print(d)
 
     if args.about:
         print(util.ABOUT_TEXT)
