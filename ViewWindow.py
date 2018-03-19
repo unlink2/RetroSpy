@@ -3,9 +3,10 @@ from PIL import Image, ImageTk
 from InputSource import InputSource
 from ControllerState import ControllerState
 import Skin
-from serial.serialutil import SerialException
 import util
-
+from serial.serialutil import SerialException
+#from threading import Thread
+from time import sleep
 
 class ViewWindow:
     def __init__(self, root, skin, bgname, comport, preview=False):
@@ -24,6 +25,7 @@ class ViewWindow:
             return
 
         self.state = ControllerState({}, {})
+        self.last_error = None
 
         self.root = root
         self.window = tk.Toplevel(self.root)
@@ -52,11 +54,17 @@ class ViewWindow:
 
         self.window.protocol('WM_DELETE_WINDOW', self.on_close)
 
-        self.window.after(1000, self.update)
+        self.update()
+        # self.start_update_t()
+
+    #def start_update_t(self):
+    #    self.thread = Thread(target=self.state_update)
+    #    self.thread.start()
 
     def make_reader(self):
         self.skin.type.makeControllerReader(comport=self.comport, preview=self.preview)
         self.skin.type.controllerreader.controllerstate += self.on_state
+        self.skin.type.controllerreader.onerror += self.on_error
 
     def load(self):
         self.background = None
@@ -224,15 +232,21 @@ class ViewWindow:
 
         return False
 
+    def state_update(self):
+        #while self.is_open:
+        self.skin.type.controllerreader.update()
+
+
     def update(self):
         if not self.is_open:
             return
 
-        try:
-            self.skin.type.controllerreader.update()
-        except SerialException as e:
-            tk.messagebox.showerror("Error", str(e))
-            return
+        if self.last_error is not None:
+            tk.messagebox.showerror('Error', self.last_error)
+            self.last_error = None
+
+        self.state_update()
+
         self.window.after(self.update_interval, self.update)
 
         # go through states and check what to do
@@ -326,3 +340,6 @@ class ViewWindow:
 
     def on_state(self, sender, state):
         self.state = state
+
+    def on_error(self, sender, error):
+        self.last_error = error

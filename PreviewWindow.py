@@ -41,7 +41,7 @@ class PreviewWindow(ViewWindow):
         self.current_select_key = ''
 
         self.preview_data = {}
-        self.window.after(1000, self.preview_update)
+        self.preview_update()
 
     def on_close(self):
         ViewWindow.on_close(self)

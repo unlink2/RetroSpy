@@ -12,6 +12,7 @@ class KeyboardReader(ControllerReader):
     def __init__(self, comport, packet_parser):
         self.controllerstate = Event()
         self.controllerdisconnected = Event()
+        self.onerror = Event()
 
         self.packet_parser = packet_parser
         self.comport = comport

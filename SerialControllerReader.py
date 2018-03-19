@@ -1,11 +1,13 @@
 from ControllerReader import ControllerReader
 from SerialMonitor import SerialMonitor
+from serial.serialutil import SerialException
 from axel import Event
 
 class SerialControllerReader(ControllerReader):
     def __init__(self, portname, packet_parser):
         self.controllerstate = Event()
         self.controllerdisconnected = Event()
+        self.onerror = Event()
 
         self.packet_parser = packet_parser
 
@@ -26,4 +28,9 @@ class SerialControllerReader(ControllerReader):
         self.serial.stop()
 
     def update(self, data=None):
-        self.serial.serial_read()
+        try:
+            self.serial.serial_read()
+        except SerialException as e:
+            self.onerror(self, e)
+        except TypeError as e:
+            print(e)
