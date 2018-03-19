@@ -5,7 +5,7 @@ from ControllerState import ControllerState
 import Skin
 import util
 from serial.serialutil import SerialException
-#from threading import Thread
+from threading import Thread
 from time import sleep
 
 class ViewWindow:
@@ -57,9 +57,9 @@ class ViewWindow:
         self.update()
         # self.start_update_t()
 
-    #def start_update_t(self):
-    #    self.thread = Thread(target=self.state_update)
-    #    self.thread.start()
+    def start_update_t(self):
+        self.thread = Thread(target=self.state_update)
+        self.thread.start()
 
     def make_reader(self):
         self.skin.type.makeControllerReader(comport=self.comport, preview=self.preview)

@@ -140,8 +140,8 @@ class SetupWindow:
         for d in devices.keyboards:
             menu.add_command(label=d._device_path, command=lambda v=d._device_path: self.portmenuvar.set(v))
 
-        for d in devices.mice:
-            menu.add_command(label=d._device_path, command=lambda v=d._device_path: self.portmenuvar.set(v))
+        #for d in devices.mice:
+        #    menu.add_command(label=d._device_path, command=lambda v=d._device_path: self.portmenuvar.set(v))
 
         for d in devices.gamepads:
             menu.add_command(label=d._device_path, command=lambda v=d._device_path: self.portmenuvar.set(v))
@@ -152,7 +152,7 @@ class SetupWindow:
         if self.portmenuvar.get() == '' and len(self.comports) > 0:
             self.portmenuvar.set(self.comports[0].device)
 
-        self.root.after(1000, self.portListUpdater)
+        self.root.after(10000, self.portListUpdater)
 
     def update(self):
         if self.skinlist is not None and \

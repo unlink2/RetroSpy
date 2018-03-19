@@ -33,6 +33,8 @@ import argparse
 import util
 from updater import Updater
 from inputs import devices
+import sys
+
 
 def main():
     SetupWindow()
@@ -98,3 +100,4 @@ def parseArgs():
 
 
 parseArgs()
+sys.exit(0)

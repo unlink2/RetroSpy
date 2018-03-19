@@ -9,6 +9,8 @@ import time
 import sched
 from threading import Thread
 from GenericController import GenericControllerReader, GenericControllerParser
+import sys
+
 
 class InputSource:
     def __init__(self, type_tag, name, requries_comport, requires_id, controllerreader):
@@ -55,9 +57,12 @@ class InputSource:
 
     def send_serial_mode(self, type_tag):
         time.sleep(2.5)
-        while not self.controllerreader.serial.is_open():
+        timeout = 5 # seconds
+        timeout_time = time.time() + timeout
+        while not self.controllerreader.serial.is_open() and time.time() <= timeout_time:
             pass
         self.controllerreader.serial.serial_write('M' + str(InputSource.ARDUINO_MODEPINS[self.type_tag]))
+        sys.exit(0)
 
     @staticmethod
     def makeInputSource(type_tag):
