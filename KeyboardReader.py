@@ -3,8 +3,6 @@ from ControllerReader import ControllerReader
 from axel import Event
 from ControllerState import ControllerStateBuilder
 from inputs import get_key
-from inputs import get_gamepad
-from inputs import get_mouse
 from inputs import UnpluggedError
 from inputs import devices
 

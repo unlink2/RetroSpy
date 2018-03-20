@@ -3,6 +3,7 @@
 import time
 from InputSource import InputSource
 from ControllerState import ControllerState
+import util
 
 # This is the experimental mega drive input view window.
 # This will move to the normal view window once it is implemented.
@@ -24,7 +25,12 @@ class CommandlineUI:
 
     def update(self):
         self.inputsource.controllerreader.update()
+        # update plugins
+        for p in util.plugins.plugins:
+            p.update(self.last_state)
+
         print(self.last_state.buttons)
+
         print(self.last_state.analogs)
         time.sleep(self.ui)
 

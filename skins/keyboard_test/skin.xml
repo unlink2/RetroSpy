@@ -4,7 +4,7 @@
     <background name="US" image="keyboard.png" />
 
     <button name="`" image="pressed.png" x="10" y="10" width="42" height="42" />
-    <button name="1" image="pressed.png" x="70" y="10" width="42" height="42" />
+    <button name="1" image="pressed.png" x="70" y="10" width="42" height="42" action='sample_plugin'/>
     <button name="2" image="pressed.png" x="130" y="10" width="42" height="42" />
     <button name="3" image="pressed.png" x="190" y="10" width="42" height="42" />
     <button name="4" image="pressed.png" x="250" y="10" width="42" height="42" />

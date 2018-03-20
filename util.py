@@ -1,6 +1,7 @@
 import os
 import keyboard
 from updater import Updater
+from pluginmanager import PluginManager
 
 ABOUT_TEXT = '\
     Retro Controller input display software\n\
@@ -27,7 +28,8 @@ UPDATE_URL = 'http://vps.krickl.me/retrospy.txt'
 
 # global updater
 updater = Updater()
-
+# global plugins
+plugins = PluginManager()
 
 def isUserRoot():
     if os.geteuid() == 0 or os.name == 'nt':

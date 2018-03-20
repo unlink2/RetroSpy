@@ -247,6 +247,10 @@ class ViewWindow:
 
         self.state_update()
 
+        # class plugins
+        for p in util.plugins.plugins:
+            p.update(self.state)
+
         self.window.after(self.update_interval, self.update)
 
         # go through states and check what to do
@@ -258,7 +262,15 @@ class ViewWindow:
                     # check for onpress action
                     if self.buttons[key]['cfg'].config.on_keydown is not None:
                         util.sendKeyToOS(self.buttons[key]['cfg'].config.on_keydown)
+
+                    # check if plugins need to be run
+                    for p in util.plugins.plugins:
+                        if self.buttons[key]['cfg'].config.action == p.name:
+                            p.on_action(key, True)
                 else:
+                    for p in util.plugins.plugins:
+                        if self.buttons[key]['cfg'].config.action == p.name:
+                            p.on_action(key, False)
                     self.cv.itemconfigure(self.buttons[key]['mob'], state=tk.HIDDEN)
 
         for key in self.state.analogs:

@@ -19,6 +19,7 @@ class ElementConfig:
         self.ignore_backgrounds = []
         self.image_crop = None
         self.on_keydown = None
+        self.action = ''
 
 
 class Background:
@@ -332,6 +333,7 @@ class Skin:
         ignorebgs = self.readArrayAttr(elem, '@ignore', False)
 
         on_keydown = self.readStringAttr(elem, '@onkeydown', False)
+        action = self.readStringAttr(elem, '@action', False)
 
         newelemcfg = ElementConfig()
         newelemcfg.x = x
@@ -343,6 +345,7 @@ class Skin:
         newelemcfg.target_backgrounds = targetbgs
         newelemcfg.ignore_backgrounds = ignorebgs
         newelemcfg.on_keydown = on_keydown
+        newelemcfg.action = action
         newelemcfg.image_path = imageattr
 
         return newelemcfg
