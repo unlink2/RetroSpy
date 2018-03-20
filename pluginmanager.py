@@ -45,3 +45,14 @@ def load_from_file(filepath):
         class_inst = getattr(py_mod, expected_class)()
 
     return class_inst
+
+
+class BasePlugin:
+    def __init__(self):
+        self.name = ''
+
+    def update(self, input_state=None):
+        pass
+
+    def on_action(self, key='', state=False):
+        pass
