@@ -30,4 +30,6 @@ New skin tag:
 Buttons can have an onkeydown attribute with a key combination.
 If you run this script as root, or are using windows, it will then send the specified key to the OS as a keyboard input.
 
+Every button tag can also include an action attribute. If action is set to a plugin's name the plugin's on_action method will be called.
+
 More documentation to come soon.
