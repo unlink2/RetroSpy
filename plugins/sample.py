@@ -1,5 +1,6 @@
 from pluginmanager import BasePlugin
 
+
 class Plugin(BasePlugin):
     def __init__(self):
         self.name = 'sample_plugin'

@@ -37,6 +37,9 @@ class SetupWindow:
         if len(self.skins.pare_errors) > 0:
             self.showSkinParseError(self.skins.pare_errors)
 
+        if len(util.plugins.errors) > 0:
+            self.showPluginError(util.plugins.errors)
+
         self.addPortList()
         self.addSkinList()
         self.addBackgroundList()
@@ -176,6 +179,14 @@ class SetupWindow:
 
     def showSkinParseError(self, errors):
         errorstr = 'Some skins were unable to be parsed:\n\n'
+        for err in errors:
+            errorstr = errorstr + str(err) + '\n'
+
+        tk.messagebox.showerror('Error', errorstr)
+
+    def showPluginError(self, errors):
+        errorstr = 'Error while loading plugins:\n\n'
+
         for err in errors:
             errorstr = errorstr + str(err) + '\n'
 
