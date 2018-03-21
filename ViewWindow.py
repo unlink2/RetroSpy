@@ -26,7 +26,7 @@ class ViewWindow:
 
         # call plugins on_view
         for p in util.plugins.plugins:
-            p.on_view(self.skin, self.skin.type_str, comport)
+            p.on_view(self.skin, root, self.skin.type_str, comport)
 
         self.state = ControllerState({}, {})
         self.last_error = None

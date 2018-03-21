@@ -57,12 +57,13 @@ class BasePlugin:
         self.skin = None
         self.input_tag = ''
         self.comport = ''
+        self.tk_root = None
 
-
-    def on_view(self, skin=None, input_tag='', comport=''):
+    def on_view(self, skin=None, tk_root=None, input_tag='', comport=''):
         self.skin = skin
         self.input_tag = input_tag
         self.comport = comport
+        self.tk_root = tk_root
 
     def on_close(self):
         pass
