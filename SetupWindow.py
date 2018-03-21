@@ -12,6 +12,7 @@ from util import isUserRoot
 from inputs import devices
 import util
 import webbrowser
+from PluginWindow import PluginWindow
 
 
 class SetupWindow:
@@ -52,6 +53,7 @@ class SetupWindow:
 
         self.filemenu = tk.Menu(self.menubar)
         self.filemenu.add_command(label='Preview', command=self.editPressed)
+        self.filemenu.add_command(label='Plugins', command=self.plugins_pressed)
         self.filemenu.add_command(label='About', command=self.aboutPressed)
 
         self.menubar.add_cascade(label="File", menu=self.filemenu)
@@ -101,6 +103,9 @@ class SetupWindow:
 
     def aboutPressed(self):
         AboutWindow(self.root)
+
+    def plugins_pressed(self):
+        PluginWindow(self.root)
 
     def addBackgroundList(self):
         self.backgroundlist = tk.Listbox(self.root)

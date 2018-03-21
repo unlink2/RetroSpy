@@ -7,7 +7,6 @@ import util
 class PluginManager:
     def __init__(self):
         self.errors = []
-        self.args = None # command line arguments
         self.plugins = [] # list of plugins
         self.load_modules('plugins')
         print('Loaded ', len(self.plugins), 'plugins with', len(self.errors), 'errors')
