@@ -81,12 +81,14 @@ class SetupWindow:
 
         curbg = self.backgroundlist.get(self.backgroundlist.curselection()[0])
 
-        if self.selectedskin.type_str == 'keyboard':
+        if self.selectedskin.type_str == 'keyboard' or self.selectedskin.type_str == 'keyboard_legacy':
             # check for root
             if not isUserRoot():
                 tk.messagebox.showwarning("Root Required", "You must be root to use the keybard viewer!")
                 return
 
+        # set settings
+        util.settings.cfg['DEFAULT']['last_sel'] = self.portmenuvar.get()
         ViewWindow(self.root, self.selectedskin, curbg, self.portmenuvar.get())
 
     def editPressed(self):
@@ -152,17 +154,29 @@ class SetupWindow:
         menu = self.portmenu.children['menu']
         menu.delete(0, 'end')
 
+        last_sel_present = False
+        last_sel = ''
+
+        if 'last_sel' in util.settings.cfg['DEFAULT']:
+            last_sel = util.settings.cfg['DEFAULT']['last_sel']
+
         self.comports = list_ports.comports()
         for p in self.comports:
+            if p.device == last_sel:
+                last_sel_present = True
             menu.add_command(label=p.device, command=lambda v=p.device: self.portmenuvar.set(v))
 
         for d in devices.keyboards:
+            if d._device_path == last_sel:
+                last_sel_present = True
             menu.add_command(label=d._device_path, command=lambda v=d._device_path: self.portmenuvar.set(v))
 
         #for d in devices.mice:
         #    menu.add_command(label=d._device_path, command=lambda v=d._device_path: self.portmenuvar.set(v))
 
         for d in devices.gamepads:
+            if d._device_path == last_sel:
+                last_sel_present = True
             menu.add_command(label=d._device_path, command=lambda v=d._device_path: self.portmenuvar.set(v))
 
         # add legacy keyboard option
@@ -170,6 +184,8 @@ class SetupWindow:
 
         if self.portmenuvar.get() == '' and len(self.comports) > 0:
             self.portmenuvar.set(self.comports[0].device)
+            if not last_sel == '' and last_sel_present:
+                self.portmenuvar.set(last_sel)
 
         self.root.after(10000, self.portListUpdater)
 
