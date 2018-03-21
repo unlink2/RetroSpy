@@ -26,6 +26,8 @@ VERSION_MINOR = 1
 VERSION_PATCH = 0
 UPDATE_URL = 'http://vps.krickl.me/retrospy.txt'
 
+cli_args = None
+
 # global updater
 updater = Updater()
 # global plugins

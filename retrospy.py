@@ -80,6 +80,7 @@ def parseArgs():
     parser.add_argument('--nox', dest='nox', action='store_true', help='Prevents GUI from opening')
 
     args = parser.parse_args()
+    util.cli_args = args
     if args.ports:
         ports = list_ports.comports()
         print("Available com ports: ")

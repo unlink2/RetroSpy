@@ -98,6 +98,10 @@ class ViewWindow:
         self.skin.type.controllerreader.finish() # close controller reader
         self.is_open = False
 
+        # call on_close of plugins
+        for p in util.plugins.plugins:
+            p.on_close()
+
     def makeCanvas(self, w, h):
         self.cv = tk.Canvas(self.window, width=w, height=h)
         # Button-1 is mouse1

@@ -1,11 +1,13 @@
 import os
 import importlib
 import imp
+import util
 
 
 class PluginManager:
     def __init__(self):
         self.errors = []
+        self.args = None # command line arguments
         self.plugins = [] # list of plugins
         self.load_modules('plugins')
         print('Loaded ', len(self.plugins), 'plugins with', len(self.errors), 'errors')
@@ -20,6 +22,8 @@ class PluginManager:
                 mod = load_from_file(os.path.join(path, d))
                 if mod is None:
                     continue
+
+                mod.cli_args = util.cli_args
                 self.plugins.append(mod)
             except Exception as e:
                 self.errors.append(e)
@@ -50,6 +54,7 @@ def load_from_file(filepath):
 class BasePlugin:
     def __init__(self):
         self.name = ''
+        self.cli_args = None
         self.skin = None
         self.input_tag = ''
         self.comport = ''
@@ -59,6 +64,9 @@ class BasePlugin:
         self.skin = skin
         self.input_tag = input_tag
         self.comport = comport
+
+    def on_close(self):
+        pass
 
     def update(self, input_state=None):
         pass

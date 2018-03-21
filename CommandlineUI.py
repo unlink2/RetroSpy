@@ -27,6 +27,9 @@ class CommandlineUI:
         while self.running:
             self.update()
 
+        for p in util.plugins.plugins:
+            p.on_close()
+
     def update(self):
         self.inputsource.controllerreader.update()
         # update plugins
