@@ -50,6 +50,15 @@ def load_from_file(filepath):
 class BasePlugin:
     def __init__(self):
         self.name = ''
+        self.skin = None
+        self.input_tag = ''
+        self.comport = ''
+
+
+    def on_view(self, skin=None, input_tag='', comport=''):
+        self.skin = skin
+        self.input_tag = input_tag
+        self.comport = comport
 
     def update(self, input_state=None):
         pass

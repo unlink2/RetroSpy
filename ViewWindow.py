@@ -24,6 +24,10 @@ class ViewWindow:
             tk.messagebox.showerror("Error", str(e))
             return
 
+        # call plugins on_view
+        for p in util.plugins.plugins:
+            p.on_view(self.skin, self.skin.type_str, comport)
+
         self.state = ControllerState({}, {})
         self.last_error = None
 

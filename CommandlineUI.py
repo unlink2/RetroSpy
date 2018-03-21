@@ -20,6 +20,10 @@ class CommandlineUI:
         self.ui = ui
         self.running = True
 
+        # call plugin's on_view
+        for p in util.plugins.plugins:
+            p.on_view(comport=comport, input_tag=device_type)
+
         while self.running:
             self.update()
 

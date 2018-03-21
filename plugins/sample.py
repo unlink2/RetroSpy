@@ -9,3 +9,4 @@ class Plugin(BasePlugin):
 
     def on_action(self, key='', state=False):
         print('Action!', key, state)
+        print(self.skin, self.comport, self.input_tag)
