@@ -2,6 +2,8 @@ import os
 import keyboard
 from updater import Updater
 from pluginmanager import PluginManager
+from settings import Settings
+
 
 ABOUT_TEXT = '\
     Retro Controller input display software\n\
@@ -25,6 +27,8 @@ VERSION_MAJOR = 0
 VERSION_MINOR = 2
 VERSION_PATCH = 0
 UPDATE_URL = 'http://vps.krickl.me/retrospy.txt'
+
+settings = Settings()
 
 cli_args = None
 

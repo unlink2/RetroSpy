@@ -33,7 +33,7 @@ class SetupWindow:
         if not os.path.isdir('skins'):
             tk.messagebox.showerror("Error", "Could not find skins folder!")
             return
-        self.skins = Skin.loadAllSkinsFromParentFolder('skins')
+        self.skins = Skin.loadAllSkinsFromParentFolder(util.settings.cfg['DEFAULT']['skin_path'])
 
         if len(self.skins.pare_errors) > 0:
             self.showSkinParseError(self.skins.pare_errors)

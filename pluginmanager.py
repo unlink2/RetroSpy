@@ -8,7 +8,7 @@ class PluginManager:
     def __init__(self):
         self.errors = []
         self.plugins = [] # list of plugins
-        self.load_modules('plugins')
+        self.load_modules(util.settings.cfg['DEFAULT']['plugin_path'])
         print('Loaded ', len(self.plugins), 'plugins with', len(self.errors), 'errors')
         for e in self.errors:
             print(e)
