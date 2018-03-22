@@ -34,7 +34,7 @@ def load_from_file(filepath):
     expected_class = 'Plugin'
     py_mod = None
 
-    mod_name,file_ext = os.path.splitext(os.path.split(filepath)[-1])
+    mod_name, file_ext = os.path.splitext(os.path.split(filepath)[-1])
 
     if file_ext.lower() == '.py':
         py_mod = imp.load_source(mod_name, filepath)
@@ -54,6 +54,8 @@ def load_from_file(filepath):
 class BasePlugin:
     def __init__(self):
         self.name = ''
+        self.author = ''
+        self.version = '1.0'
         self.cli_args = None
         self.skin = None
         self.input_tag = ''

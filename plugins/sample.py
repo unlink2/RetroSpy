@@ -5,6 +5,8 @@ class Plugin(BasePlugin):
     def __init__(self):
         super(BasePlugin, self).__init__()
         self.name = 'sample_plugin'
+        self.author = 'unlink'
+        self.version = '1.0'
 
     def update(self, input_state=None):
         pass
