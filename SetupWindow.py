@@ -41,6 +41,10 @@ class SetupWindow:
         if len(util.plugins.errors) > 0:
             self.showPluginError(util.plugins.errors)
 
+        # add root to plugin
+        for p in util.plugins.plugins:
+            p.on_view(tk_root=self.root)
+
         self.addPortList()
         self.addSkinList()
         self.addBackgroundList()
@@ -56,7 +60,12 @@ class SetupWindow:
         self.filemenu.add_command(label='Plugins', command=self.plugins_pressed)
         self.filemenu.add_command(label='About', command=self.aboutPressed)
 
+        self.pluginsmenu = tk.Menu(self.menubar)
+        for p in util.plugins.plugins:
+            self.pluginsmenu.add_command(label=p.name, command=p.on_menu_pressed)
+
         self.menubar.add_cascade(label="File", menu=self.filemenu)
+        self.menubar.add_cascade(label='Plugins', menu=self.pluginsmenu)
 
         self.root.after(100, self.update)
         self.root.after(1000, self.portListUpdater)

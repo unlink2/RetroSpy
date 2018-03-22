@@ -83,6 +83,10 @@ class BasePlugin:
         self.comport = comport
         self.tk_root = tk_root
 
+    # called when menu is pressed
+    def on_menu_pressed(self):
+        pass
+
     def on_close(self):
         pass
 

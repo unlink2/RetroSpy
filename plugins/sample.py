@@ -18,5 +18,8 @@ class Plugin(BasePlugin):
         # setting = self.read_setting('sample')
         # print(setting)
 
+    def on_menu_pressed(self):
+        print('Menu pressed')
+
     def on_close(self):
         pass
