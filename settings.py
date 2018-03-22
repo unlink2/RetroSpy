@@ -15,7 +15,8 @@ class Settings:
             if section not in self.cfg:
                 self.cfg[section] = {}
             for key in Settings.DEFAULT_VALUES[section].keys():
-                self.cfg[section][key] = str(Settings.DEFAULT_VALUES[section][key])
+                if key not in self.cfg[section]:
+                    self.cfg[section][key] = str(Settings.DEFAULT_VALUES[section][key])
 
     def write(self):
         with open(self.path, 'w') as configfile:
@@ -28,7 +29,7 @@ class Settings:
 Settings.DEFAULT_VALUES = {
         'DEFAULT': {
             'plugin_path': 'plugins',
-            'skin_path': 'skins'
+            'skin_path': 'skins',
         }
 }
 

@@ -7,6 +7,8 @@ import util
 from serial.serialutil import SerialException
 from threading import Thread
 from time import sleep
+import time
+
 
 class ViewWindow:
     def __init__(self, root, skin, bgname, comport, preview=False):
@@ -29,6 +31,8 @@ class ViewWindow:
             p.on_view(self.skin, root, self.skin.type_str, comport)
 
         self.state = ControllerState({}, {})
+        self.state_queue = [] # array of states in case delay is set
+
         self.last_error = None
 
         self.root = root
