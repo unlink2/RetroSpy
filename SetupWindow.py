@@ -196,6 +196,10 @@ class SetupWindow:
             self.lastbgselection = self.skinlist.curselection()[0]
             self.updateBackgroundList()
 
+        # update plugins
+        for p in util.plugins.plugins:
+            p.update()
+
         self.root.after(100, self.update)
 
     def showSkinParseError(self, errors):

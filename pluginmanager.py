@@ -2,6 +2,7 @@ import os
 import importlib
 import imp
 import util
+import atexit
 
 
 class PluginManager:
@@ -58,6 +59,21 @@ class BasePlugin:
         self.input_tag = ''
         self.comport = ''
         self.tk_root = None
+        atexit.register(self.at_exit)
+
+    def write_setting(self, key, val):
+        if self.name not in util.settings.cfg:
+            util.settings.cfg[self.name] = {}
+        util.settings.cfg[self.name][str(key)] = str(val)
+
+    def read_setting(self, key):
+        if self.name not in util.settings.cfg:
+            return None
+
+        if key not in util.settings.cfg[self.name]:
+            return None
+
+        return util.settings.cfg[self.name][str(key)]
 
     def on_view(self, skin=None, tk_root=None, input_tag='', comport=''):
         self.skin = skin
@@ -66,6 +82,9 @@ class BasePlugin:
         self.tk_root = tk_root
 
     def on_close(self):
+        pass
+
+    def at_exit(self):
         pass
 
     def update(self, input_state=None):
