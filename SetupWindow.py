@@ -62,7 +62,8 @@ class SetupWindow:
 
         self.pluginsmenu = tk.Menu(self.menubar)
         for p in util.plugins.plugins:
-            self.pluginsmenu.add_command(label=p.name, command=p.on_menu_pressed)
+            if not p.hide_menu:
+                self.pluginsmenu.add_command(label=p.name, command=p.on_menu_pressed)
 
         self.menubar.add_cascade(label="File", menu=self.filemenu)
         self.menubar.add_cascade(label='Plugins', menu=self.pluginsmenu)

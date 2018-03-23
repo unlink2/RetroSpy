@@ -65,6 +65,7 @@ class BasePlugin:
         self.tk_root = None
         atexit.register(self.at_exit)
         self.settings = None
+        self.hide_menu = False
 
     def on_create(self):
         pass

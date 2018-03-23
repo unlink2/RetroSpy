@@ -7,6 +7,7 @@ class Plugin(BasePlugin):
         self.name = 'sample_plugin'
         self.author = 'unlink'
         self.version = '1.0'
+        self.hide_menu = True
 
     def update(self, input_state=None):
         pass
