@@ -33,7 +33,7 @@ class SetupWindow:
         if not os.path.isdir('skins'):
             tk.messagebox.showerror("Error", "Could not find skins folder!")
             return
-        self.skins = Skin.loadAllSkinsFromParentFolder(util.settings.cfg['DEFAULT']['skin_path'])
+        self.skins = Skin.loadAllSkinsFromParentFolder(util.settings.get_str('skin_path'))
 
         if len(self.skins.pare_errors) > 0:
             self.showSkinParseError(self.skins.pare_errors)
@@ -97,7 +97,7 @@ class SetupWindow:
                 return
 
         # set settings
-        util.settings.cfg['DEFAULT']['last_sel'] = self.portmenuvar.get()
+        util.settings.set_str('last_sel', self.portmenuvar.get())
         ViewWindow(self.root, self.selectedskin, curbg, self.portmenuvar.get())
 
     def editPressed(self):
@@ -164,10 +164,10 @@ class SetupWindow:
         menu.delete(0, 'end')
 
         last_sel_present = False
-        last_sel = ''
+        last_sel = util.settings.get_str('last_sel')
 
-        if 'last_sel' in util.settings.cfg['DEFAULT']:
-            last_sel = util.settings.cfg['DEFAULT']['last_sel']
+        if last_sel is None:
+            last_sel = ''
 
         self.comports = list_ports.comports()
         for p in self.comports:

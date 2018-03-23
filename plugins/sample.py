@@ -14,9 +14,6 @@ class Plugin(BasePlugin):
     def on_action(self, key='', state=False):
         print('Action!', key, state)
         print(self.skin, self.comport, self.input_tag)
-        # self.write_setting('sample', 'value')
-        # setting = self.read_setting('sample')
-        # print(setting)
 
     def on_menu_pressed(self):
         print('Menu pressed')

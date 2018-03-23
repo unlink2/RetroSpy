@@ -1,3 +1,5 @@
+import time
+
 
 class ControllerState:
     # buttons is a dict of string, bool
@@ -5,6 +7,7 @@ class ControllerState:
     def __init__(self, buttons, analogs):
         self.buttons = buttons
         self.analogs = analogs
+        self.time = time.time()
 
 
 class ControllerStateBuilder:

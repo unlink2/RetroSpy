@@ -36,6 +36,8 @@ class CommandlineUI:
         for p in util.plugins.plugins:
             p.update(self.last_state)
 
+        print(self.last_state.time)
+
         print(self.last_state.buttons)
 
         print(self.last_state.analogs)

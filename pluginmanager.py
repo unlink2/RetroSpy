@@ -9,7 +9,7 @@ class PluginManager:
     def __init__(self):
         self.errors = []
         self.plugins = [] # list of plugins
-        self.load_modules(util.settings.cfg['DEFAULT']['plugin_path'])
+        self.load_modules(util.settings.get_str('plugin_path'))
         print('Loaded ', len(self.plugins), 'plugins with', len(self.errors), 'errors')
         for e in self.errors:
             print(e)
@@ -24,6 +24,8 @@ class PluginManager:
                     continue
 
                 mod.cli_args = util.cli_args
+                mod.settings = util.settings
+                mod.on_create()
                 self.plugins.append(mod)
             except Exception as e:
                 self.errors.append(e)
@@ -62,20 +64,10 @@ class BasePlugin:
         self.comport = ''
         self.tk_root = None
         atexit.register(self.at_exit)
+        self.settings = None
 
-    def write_setting(self, key, val):
-        if self.name not in util.settings.cfg:
-            util.settings.cfg[self.name] = {}
-        util.settings.cfg[self.name][str(key)] = str(val)
-
-    def read_setting(self, key):
-        if self.name not in util.settings.cfg:
-            return None
-
-        if key not in util.settings.cfg[self.name]:
-            return None
-
-        return util.settings.cfg[self.name][str(key)]
+    def on_create(self):
+        pass
 
     def on_view(self, skin=None, tk_root=None, input_tag='', comport=''):
         self.skin = skin
