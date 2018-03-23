@@ -13,6 +13,7 @@ from inputs import devices
 import util
 import webbrowser
 from PluginWindow import PluginWindow
+from tkinter import filedialog
 
 
 class SetupWindow:
