@@ -24,7 +24,7 @@ ABOUT_TEXT = '\
 
 APPLICATION_NAME = 'RetroSpy'
 VERSION_MAJOR = 0
-VERSION_MINOR = 2
+VERSION_MINOR = 3
 VERSION_PATCH = 0
 UPDATE_URL = 'http://vps.krickl.me/retrospy.txt'
 
