@@ -33,3 +33,8 @@ If you run this script as root, or are using windows, it will then send the spec
 Every button tag can also include an action attribute. If action is set to a plugin's name the plugin's on_action method will be called.
 
 More documentation to come soon.
+
+## Note about Keyboard Input
+
+This program can display keyboard inputs. It is therefore pretty easy to use this as a keylogger.
+Please do not use it for malocious purposes.
