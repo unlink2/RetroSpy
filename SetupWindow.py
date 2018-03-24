@@ -42,8 +42,8 @@ class SetupWindow:
         if len(util.plugins.errors) > 0:
             self.showPluginError(util.plugins.errors)
 
-        # add root to plugin
-        for p in util.plugins.plugins:
+        # add root to all plugins
+        for p in util.plugins.all_plugins:
             p.on_view(tk_root=self.root)
 
         self.addPortList()
@@ -62,7 +62,7 @@ class SetupWindow:
         self.filemenu.add_command(label='About', command=self.aboutPressed)
 
         self.pluginsmenu = tk.Menu(self.menubar)
-        for p in util.plugins.plugins:
+        for p in util.plugins.all_plugins:
             if not p.hide_menu:
                 self.pluginsmenu.add_command(label=p.name, command=p.on_menu_pressed)
 

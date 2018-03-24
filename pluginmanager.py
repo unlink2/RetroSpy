@@ -8,7 +8,7 @@ import atexit
 class PluginManager:
     def __init__(self):
         self.errors = []
-        self.plugins = [] # list of plugins
+        self.plugins_list = [] # list of plugins
         self.load_modules(util.settings.get_str('plugin_path'))
         print('Loaded ', len(self.plugins), 'plugins with', len(self.errors), 'errors')
         for e in self.errors:
@@ -26,10 +26,24 @@ class PluginManager:
                 mod.cli_args = util.cli_args
                 mod.settings = util.settings
                 mod.on_create()
-                self.plugins.append(mod)
+                self.plugins_list.append(mod)
             except Exception as e:
                 self.errors.append(e)
 
+    # returns all enabled plugins
+    @property
+    def plugins(self):
+        enabled_list = []
+        for p in self.plugins_list:
+            if not util.settings.does_key_exist('enabled', section=p.name) or \
+                util.settings.get_bool('enabled', section=p.name):
+                    enabled_list.append(p)
+
+        return enabled_list
+
+    @property
+    def all_plugins(self):
+        return self.plugins_list
 
 def load_from_file(filepath):
     class_inst = None
