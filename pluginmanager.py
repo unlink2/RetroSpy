@@ -10,11 +10,16 @@ class PluginManager:
         self.errors = []
         self.plugins_list = [] # list of plugins
         self.load_modules(util.settings.get_str('plugin_path'))
-        print('Loaded ', len(self.plugins), 'plugins with', len(self.errors), 'errors')
+        print('Loaded ', len(self.all_plugins), 'plugins with', len(self.errors), 'errors')
         for e in self.errors:
             print(e)
 
     def load_modules(self, path):
+        # close all exisitng plugins in case of reload
+        for p in self.all_plugins:
+            p.at_exit()
+
+        self.plugins_list.clear()
         for d in os.listdir(path):
             if d == '.' or d == '..':
                 continue
