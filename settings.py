@@ -97,6 +97,7 @@ Settings.DEFAULT_VALUES = {
         'DEFAULT': {
             'plugin_path': 'plugins',
             'skin_path': 'skins',
+            'check_updates': 'True'
         }
 }
 

@@ -15,6 +15,7 @@ import webbrowser
 from PluginWindow import PluginWindow
 from tkinter import filedialog
 from CustomWidgets import PopupListbox
+from SettingsWindow import SettingsWindow
 
 
 class SetupWindow:
@@ -76,6 +77,7 @@ class SetupWindow:
 
         self.filemenu = tk.Menu(self.menubar)
         self.filemenu.add_command(label='Preview', command=self.editPressed)
+        self.filemenu.add_command(label='Settings', command=self.settings_pressed, accelerator='Ctrl+S')
         self.filemenu.add_command(label='Plugins', command=self.plugins_pressed, accelerator='Ctrl+P')
         self.filemenu.add_command(label='About', command=self.aboutPressed)
 
@@ -89,6 +91,7 @@ class SetupWindow:
 
         # keyboard shortcuts
         self.root.bind_all('<Control-p>', self.plugins_pressed)
+        self.root.bind_all('<Control-s>', self.settings_pressed)
 
         self.root.after(100, self.update)
         self.root.after(1000, self.portListUpdater)
@@ -97,11 +100,16 @@ class SetupWindow:
         self.root.mainloop()
 
     def check_update(self):
+        if not util.settings.get_bool('check_updates'):
+            return
         util.updater.check_update()
         if util.updater.update_available:
             result = tk.messagebox.askquestion('Update available', 'Would you like to download it?')
             if result == 'yes':
                 webbrowser.open(util.updater.update_url)
+
+    def settings_pressed(self, *args, **kwargs):
+        SettingsWindow(self.root)
 
     def goPressed(self):
         # make sure a selection has been made!
