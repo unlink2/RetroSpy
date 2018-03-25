@@ -106,9 +106,11 @@ class SetupWindow:
     def goPressed(self):
         # make sure a selection has been made!
         if self.selectedskin is None:
+            tk.messagebox.showwarning('You are not prepared!', 'You need to select an input device first!')
             return
 
         if len(self.backgroundlist.curselection()) <= 0:
+            tk.messagebox.showwarning('You are not prepared!', 'You need to select a background first!')
             return
 
         curbg = self.backgroundlist.get(self.backgroundlist.curselection()[0])
