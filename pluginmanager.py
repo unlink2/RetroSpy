@@ -3,18 +3,25 @@ import importlib
 import imp
 import util
 import atexit
+import tkinter as tk
+from tkinter import messagebox
 
 
 class PluginManager:
     def __init__(self):
         self.errors = []
         self.plugins_list = [] # list of plugins
+        self.load_all()
+
+    def load_all(self):
         self.load_modules(util.settings.get_str('plugin_path'))
         print('Loaded ', len(self.all_plugins), 'plugins with', len(self.errors), 'errors')
         for e in self.errors:
             print(e)
 
-    def load_modules(self, path):
+    def load_modules(self, path=None):
+        if path is None:
+            path = util.settings.get_str('plugin_path')
         # close all exisitng plugins in case of reload
         for p in self.all_plugins:
             p.at_exit()
@@ -97,7 +104,8 @@ class BasePlugin:
 
     # called when menu is pressed
     def on_menu_pressed(self):
-        pass
+        if self.tk_root is not None:
+            messagebox.showinfo('No Settings Window', 'This plugin does not have a settings window.', parent=self.tk_root)
 
     def on_close(self):
         pass

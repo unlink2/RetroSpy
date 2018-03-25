@@ -16,8 +16,8 @@ class Plugin(BasePlugin):
         print('Action!', key, state)
         print(self.skin, self.comport, self.input_tag)
 
-    def on_menu_pressed(self):
-        print('Menu pressed')
+    # def on_menu_pressed(self):
+    #    print('Menu pressed')
 
     def on_close(self):
         pass
