@@ -23,13 +23,14 @@ class SetupWindow:
 
         self.portmenu = None
         self.portmenuvar = tk.StringVar('')
+        self.portmenuvar_display = tk.StringVar('')
         self.backgroundlist = None
         self.skinlist = None
         self.lastbgselection = -1
         self.selectedskin = None
 
-        self.root.minsize(width=350, height=300)
-        self.root.maxsize(width=350, height=300)
+        self.root.minsize(width=370, height=280)
+        self.root.maxsize(width=370, height=280)
         self.root.title('Setup')
 
         # right click menu
@@ -51,12 +52,24 @@ class SetupWindow:
         for p in util.plugins.all_plugins:
             p.on_view(tk_root=self.root)
 
+        # grid layout
+        self.frame = tk.Frame()
+        self.frame.pack()
+        self.frame.columnconfigure(4) # add 4 columns
+        self.frame.rowconfigure(4) # add 4 rows
+
+        device_label = tk.Label(self.frame, text='Input Devices:')
+        device_label.grid(row=0, column=0)
+
+        background_label = tk.Label(self.frame, text='Backgrounds:')
+        background_label.grid(row=0, column=3)
+
         self.addPortList()
         self.addSkinList()
         self.addBackgroundList()
 
-        gob = tk.Button(self.root, text='go!', command=self.goPressed)
-        gob.pack(side=tk.BOTTOM)
+        gob = tk.Button(self.frame, text='go!', command=self.goPressed)
+        gob.grid(row=4, column=3, padx=5)
 
         self.menubar = tk.Menu(self.root)
         self.root.config(menu=self.menubar)
@@ -129,9 +142,9 @@ class SetupWindow:
         PluginWindow(self.root)
 
     def addBackgroundList(self):
-        self.backgroundlist = tk.Listbox(self.root)
+        self.backgroundlist = tk.Listbox(self.frame)
 
-        self.backgroundlist.pack(side=tk.RIGHT)
+        self.backgroundlist.grid(row=1, column=3, columnspan=1, rowspan=2, padx=1)
 
     def updateBackgroundList(self):
         if self.backgroundlist is not None:
@@ -154,17 +167,17 @@ class SetupWindow:
             self.backgroundlist.insert(i, selectedskin.backgrounds[i].name)
 
     def addSkinList(self):
-        self.skinlist = tk.Listbox(self.root)
+        self.skinlist = tk.Listbox(self.frame)
 
         for i in range(0, len(self.skins.skins_loaded)):
             self.skinlist.insert(i, self.skins.skins_loaded[i].name)
 
-        self.skinlist.pack(side=tk.LEFT)
+        self.skinlist.grid(row=1, column=0, columnspan=1, rowspan=2, padx=1)
 
     def addPortList(self):
-        self.portmenu = tk.OptionMenu(self.root, self.portmenuvar, [], '')
+        self.portmenu = tk.OptionMenu(self.frame, self.portmenuvar_display, [], '')
         self.portListUpdater()
-        self.portmenu.pack(side=tk.TOP, pady=10)
+        self.portmenu.grid(pady=0, padx=0, row=4, column=0, columnspan=1, rowspan=1)
 
     def portListUpdater(self):
         if self.portmenu is None:
@@ -209,6 +222,8 @@ class SetupWindow:
         self.root.after(10000, self.portListUpdater)
 
     def update(self):
+        # update port menu var display
+        self.portmenuvar_display.set(self.portmenuvar.get()[:12])
         if self.skinlist is not None and \
             len(self.skinlist.curselection()) > 0 and \
                 self.skinlist.curselection()[0] != self.lastbgselection:

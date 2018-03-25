@@ -67,6 +67,11 @@ class PluginWindow():
         util.plugins.load_all()
         self.pop_plugin_list()
 
+        # add root to all plugins
+        for p in util.plugins.all_plugins:
+            p.on_view(tk_root=self.root)
+
+
     def show_p_settings(self):
         for p in util.plugins.all_plugins:
             if p.name == self.pluginmenu_var.get():
