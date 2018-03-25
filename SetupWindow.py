@@ -14,6 +14,7 @@ import util
 import webbrowser
 from PluginWindow import PluginWindow
 from tkinter import filedialog
+from CustomWidgets import PopupListbox
 
 
 class SetupWindow:
@@ -30,6 +31,10 @@ class SetupWindow:
         self.root.minsize(width=350, height=300)
         self.root.maxsize(width=350, height=300)
         self.root.title('Setup')
+
+        # right click menu
+        # self.right_menu = PopupListbox(self.root, selectmode='multiple')
+        # self.right_menu.pack()
 
         if not os.path.isdir('skins'):
             tk.messagebox.showerror("Error", "Could not find skins folder!")
@@ -58,7 +63,7 @@ class SetupWindow:
 
         self.filemenu = tk.Menu(self.menubar)
         self.filemenu.add_command(label='Preview', command=self.editPressed)
-        self.filemenu.add_command(label='Plugins', command=self.plugins_pressed)
+        self.filemenu.add_command(label='Plugins', command=self.plugins_pressed, accelerator='Ctrl+P')
         self.filemenu.add_command(label='About', command=self.aboutPressed)
 
         self.pluginsmenu = tk.Menu(self.menubar)
@@ -68,6 +73,9 @@ class SetupWindow:
 
         self.menubar.add_cascade(label="File", menu=self.filemenu)
         self.menubar.add_cascade(label='Plugins', menu=self.pluginsmenu)
+
+        # keyboard shortcuts
+        self.root.bind_all('<Control-p>', self.plugins_pressed)
 
         self.root.after(100, self.update)
         self.root.after(1000, self.portListUpdater)
@@ -117,7 +125,7 @@ class SetupWindow:
     def aboutPressed(self):
         AboutWindow(self.root)
 
-    def plugins_pressed(self):
+    def plugins_pressed(self, *args, **kwargs):
         PluginWindow(self.root)
 
     def addBackgroundList(self):
