@@ -1,0 +1,12 @@
+language: python
+python:
+    - "3.6"
+install:
+    - pip install pySerial
+    - pip install pillow
+    - pip install xmltodict
+    - pip install axel
+    - pip install keyboard
+    - pip install inputs
+script:
+    - test.py
