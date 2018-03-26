@@ -1,5 +1,7 @@
 # RetroSpy
 
+[![Build Status](https://travis-ci.org/unlink2/RetroSpy.svg?branch=master)](https://travis-ci.org/unlink2/RetroSpy)
+
 This is a port of [NintendoSpy](https://github.com/jaburns/NintendoSpy) to make it multiplatform.
 
 The goal of this project is to maintain compatability with the original Application.
