@@ -8,7 +8,5 @@ install:
     - pip install axel
     - pip install keyboard
     - pip install inputs
-before_script:
-    - chmod +x ./test.py
 script:
-    - ./test.py
+    - python ./unlink2/RetroSpy/test.py
