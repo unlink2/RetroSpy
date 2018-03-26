@@ -9,5 +9,4 @@ install:
     - pip install keyboard
     - pip install inputs
 script:
-    - ls
-    - python test.py
+    - python ./tests.py
