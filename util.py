@@ -61,6 +61,8 @@ def sendKeyToOS(key):
 
 def parseColorStr(colstr, return_hex=True):
     if return_hex:
+        if colstr[0] == '#':
+            return colstr
         return '#' + colstr
     red = ""
     green = ""
