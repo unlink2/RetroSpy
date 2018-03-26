@@ -9,4 +9,4 @@ install:
     - pip install keyboard
     - pip install inputs
 script:
-    - python ./unlink2/RetroSpy/test.py
+    - python ./test.py
