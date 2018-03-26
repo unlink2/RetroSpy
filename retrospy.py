@@ -77,10 +77,16 @@ def parseArgs():
                         Usage: --dump <comport> <device type>',
                         nargs=2)
 
+    # parser.add_argument('--tests', dest='unit_test', action='store_true', help='Run unit tests')
     parser.add_argument('--nox', dest='nox', action='store_true', help='Prevents GUI from opening')
 
     args = parser.parse_args()
     util.cli_args = args
+
+    # if args.unit_test:
+    #    import tests
+    #    tests.run_test()
+
     if args.ports:
         ports = list_ports.comports()
         print("Available com ports: ")

@@ -24,5 +24,9 @@ class TestMegaDrive(unittest.TestCase):
 
         self.assertEqual(test_packet.buttons, test_builder.build().buttons)
 
-if __name__ == '__main__':
+
+def run_test():
     unittest.main()
+
+if __name__ == '__main__':
+    run_test()
