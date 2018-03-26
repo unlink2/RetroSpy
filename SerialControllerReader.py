@@ -2,6 +2,7 @@ from ControllerReader import ControllerReader
 from SerialMonitor import SerialMonitor
 from serial.serialutil import SerialException
 from axel import Event
+import util
 
 class SerialControllerReader(ControllerReader):
     def __init__(self, portname, packet_parser):
@@ -33,4 +34,4 @@ class SerialControllerReader(ControllerReader):
         except SerialException as e:
             self.onerror(self, e)
         except TypeError as e:
-            print(e)
+            util.logger.error(str(e))

@@ -3,6 +3,7 @@ import keyboard
 from updater import Updater
 from pluginmanager import PluginManager
 from settings import Settings
+import logging
 
 
 ABOUT_TEXT = '\
@@ -28,6 +29,12 @@ VERSION_MINOR = 4
 VERSION_PATCH = 0
 UPDATE_URL = 'http://vps.krickl.me/retrospy.txt'
 
+LOGGER_FORMAT = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+logging.basicConfig(format=LOGGER_FORMAT)
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
 settings = Settings()
 
 cli_args = None
@@ -49,7 +56,7 @@ def sendKeyToOS(key):
     if isUserRoot():
         keyboard.press_and_release(key)
     else:
-        print('[Warning]: to send keypresses you must either use Windows or run this script as root!')
+        logger.warning('to send keypresses you must either use Windows or run this script as root!')
 
 
 def parseColorStr(colstr, return_hex=True):

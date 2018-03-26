@@ -5,6 +5,7 @@ from ControllerState import ControllerStateBuilder
 from inputs import get_key
 from inputs import UnpluggedError
 from inputs import devices
+import util
 
 class KeyboardReader(ControllerReader):
     def __init__(self, comport, packet_parser):
@@ -73,7 +74,7 @@ class KeyboardMonitor:
             #for e in controller_event:
             #    print(e.ev_type, e.code, e.state)
         except UnpluggedError as e:
-            print(e)
+            util.logger.error(str(e))
 
     def on_key_data(self, data):
         if data is None:

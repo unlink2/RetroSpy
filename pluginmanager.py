@@ -15,9 +15,9 @@ class PluginManager:
 
     def load_all(self):
         self.load_modules(util.settings.get_str('plugin_path'))
-        print('Loaded ', len(self.all_plugins), 'plugins with', len(self.errors), 'errors')
+        util.logger.info('Loaded {} plugins with {} errors.'.format(len(self.all_plugins), len(self.errors)))
         for e in self.errors:
-            print(e)
+            util.logger.error(str(e))
 
     def load_modules(self, path=None):
         if path is None:

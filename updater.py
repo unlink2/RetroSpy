@@ -31,7 +31,7 @@ class Updater:
                     self.new_ver = res_data[0]
                     self.update_url = res_data[1]
         except Exception as e:
-            print(e)
+            util.logger.error(e)
 
     def download(self):
         pass
