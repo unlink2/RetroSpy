@@ -13,14 +13,24 @@ class PreviewWindow(ViewWindow):
         keylabel = tk.Label(self.edit_window, text='Key name (like in xml)')
         keylabel.pack()
 
-        self.keyentry = tk.Entry(self.edit_window)
-        self.keyentry.pack()
+        self.keyentry = tk.StringVar('')
+
+        self.add_key_list()
+        # self.keyentry = tk.Entry(self.edit_window)
+        # self.keyentry.pack()
 
         valuelabel = tk.Label(self.edit_window, text='Value (true/false or float number)')
         valuelabel.pack()
 
         self.valueentry = tk.Entry(self.edit_window)
         self.valueentry.pack()
+
+        type_label = tk.Label(self.edit_window, text='Type of element')
+        type_label.pack()
+        self.elem_type = tk.StringVar('')
+
+        self.elem_entry = tk.Entry(self.edit_window, textvariable=self.elem_type)
+        self.elem_entry.pack()
 
         svb = tk.Button(self.edit_window, text='set value', command=self.set_value_pressed)
         svb.pack()
@@ -30,6 +40,9 @@ class PreviewWindow(ViewWindow):
 
         selb = tk.Button(self.edit_window, text='select', command=self.select_pressed)
         selb.pack()
+
+        addb = tk.Button(self.edit_window, text='add', command=self.add_pressed)
+        addb.pack()
 
         saveb = tk.Button(self.edit_window, text='save', command=self.save_pressed)
         saveb.pack()
@@ -55,10 +68,39 @@ class PreviewWindow(ViewWindow):
 
         self.window.after(self.update_interval, self.preview_update)
 
+        # update type tag
+        for p in self.skin.backgrounds:
+            if p.name == self.keyentry.get():
+                self.elem_type.set('background')
+
+        for p in self.skin.details:
+            if p.name == self.keyentry.get():
+                self.elem_type.set('detail')
+
+        for p in self.skin.buttons:
+            if p.name == self.keyentry.get():
+                self.elem_type.set('button')
+
+        for p in self.skin.rangebuttons:
+            if p.name == self.keyentry.get():
+                self.elem_type.set('rangebutton')
+
+        for p in self.skin.analogsticks:
+            if p.xname == self.keyentry.get() or p.yname == self.keyentry.get():
+                self.elem_type.set('stick')
+
+        for p in self.skin.analogtriggers:
+            if p.name == self.keyentry.get():
+                self.elem_type.set('analog')
+
+
     def select_pressed(self):
         key = self.keyentry.get()
         self.current_select_key = key
         self.current_select, self.current_select_type = self.skin.get_element(key)
+
+    def add_pressed(self):
+        pass
 
     def save_pressed(self):
         self.skin.write_to_xml()
@@ -121,3 +163,33 @@ class PreviewWindow(ViewWindow):
                 return
 
         self.preview_data[key] = {'name': key, 'type': typedesc, 'val': val}
+
+    def add_key_list(self):
+        self.keymenu = tk.OptionMenu(self.edit_window, self.keyentry, [], '')
+        self.key_list_updater()
+        self.keymenu.pack()
+
+    def key_list_updater(self):
+        menu = self.keymenu.children['menu']
+        menu.delete(0, 'end')
+
+        for p in self.skin.backgrounds:
+            menu.add_command(label=p.name, command=lambda v=p.name: self.keyentry.set(v))
+
+        for p in self.skin.details:
+            menu.add_command(label=p.name, command=lambda v=p.name: self.keyentry.set(v))
+
+        for p in self.skin.buttons:
+            self.keyentry.set(p.name)
+            menu.add_command(label=p.name, command=lambda v=p.name: self.keyentry.set(v))
+
+        for p in self.skin.rangebuttons:
+            menu.add_command(label=p.name, command=lambda v=p.name: self.keyentry.set(v))
+
+        for p in self.skin.analogsticks:
+            menu.add_command(label=p.xname, command=lambda v=p.xname: self.keyentry.set(v))
+            menu.add_command(label=p.yname, command=lambda v=p.yname: self.keyentry.set(v))
+
+        for p in self.skin.analogtriggers:
+            menu.add_command(label=p.name, command=lambda v=p.name: self.keyentry.set(v))
+
