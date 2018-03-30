@@ -118,6 +118,14 @@ class Skin:
         self.load_xml_dict(doc)
 
     def load_xml_dict(self, doc):
+        # clear list of elements
+        self.backgrounds = []  # list of backgrounds
+        self.details = []  # list of details
+        self.buttons = []  # list of buttons
+        self.rangebuttons = []  # list of rangebuttons
+        self.analogsticks = []  # list of analogsticks
+        self.analogtriggers = []  # list of analogtriggers
+
         skinpath = self.skinpath
         self.name = self.readStringAttr(doc['skin'], '@name')
         self.author = self.readStringAttr(doc['skin'], '@author')
