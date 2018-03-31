@@ -104,7 +104,7 @@ class ViewWindow:
         self.window.destroy()
         self.is_open = False
         self.update_running = False
-        self.thread.join()
+        self.thread.join(2)
         self.skin.type.controllerreader.finish() # close controller reader
 
         # call on_close of plugins
@@ -253,6 +253,8 @@ class ViewWindow:
         while self.update_running:
             self.skin.type.controllerreader.update()
             time.sleep(self.thread_update_interval / 1000)
+
+        util.logger.info('State update thread ended normally.')
 
     def update(self):
         if not self.is_open:
