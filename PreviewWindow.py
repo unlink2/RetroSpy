@@ -64,6 +64,8 @@ class PreviewWindow(ViewWindow):
         if not self.is_open:
             return
 
+        ViewWindow.update(self)
+
         self.skin.type.controllerreader.update(self.preview_data)
 
         self.window.after(self.update_interval, self.preview_update)

@@ -18,7 +18,9 @@ class ViewWindow:
         self.is_open = True
         self.preview = preview
 
-        self.update_interval = 3
+        self.update_interval = 10
+        self.thread_update_interval = 3
+        self.update_running = True
 
         try:
             self.make_reader()
@@ -63,11 +65,12 @@ class ViewWindow:
         self.window.protocol('WM_DELETE_WINDOW', self.on_close)
 
         self.update()
-        # self.start_update_t()
+        self.start_update_t()
 
     def start_update_t(self):
         self.thread = Thread(target=self.state_update)
         self.thread.start()
+        self.update_running = True
 
     def make_reader(self):
         self.skin.type.makeControllerReader(comport=self.comport, preview=self.preview)
@@ -99,8 +102,10 @@ class ViewWindow:
     def on_close(self):
         self.root.deiconify()
         self.window.destroy()
-        self.skin.type.controllerreader.finish() # close controller reader
         self.is_open = False
+        self.update_running = False
+        self.thread.join()
+        self.skin.type.controllerreader.finish() # close controller reader
 
         # call on_close of plugins
         for p in util.plugins.plugins:
@@ -245,9 +250,9 @@ class ViewWindow:
         return False
 
     def state_update(self):
-        #while self.is_open:
-        self.skin.type.controllerreader.update()
-
+        while self.update_running:
+            self.skin.type.controllerreader.update()
+            time.sleep(self.thread_update_interval / 1000)
 
     def update(self):
         if not self.is_open:
@@ -257,13 +262,15 @@ class ViewWindow:
             tk.messagebox.showerror('Error', self.last_error)
             self.last_error = None
 
-        self.state_update()
+        # self.state_update()
 
         # class plugins
         for p in util.plugins.plugins:
             p.update(self.state)
 
-        self.window.after(self.update_interval, self.update)
+        # only call this if not in preview window
+        if not self.preview:
+            self.window.after(self.update_interval, self.update)
 
         # go through states and check what to do
         for key in self.state.buttons:
