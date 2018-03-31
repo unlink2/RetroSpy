@@ -69,6 +69,7 @@ class ViewWindow:
 
     def start_update_t(self):
         self.thread = Thread(target=self.state_update)
+        self.thread.setDaemon(True) # will terminate when main program ends
         self.thread.start()
         self.update_running = True
 
