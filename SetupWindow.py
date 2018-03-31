@@ -16,6 +16,7 @@ from PluginWindow import PluginWindow
 from tkinter import filedialog
 from CustomWidgets import PopupListbox
 from SettingsWindow import SettingsWindow
+import sys
 
 
 class SetupWindow:
