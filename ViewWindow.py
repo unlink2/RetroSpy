@@ -264,6 +264,7 @@ class ViewWindow:
         if self.last_error is not None:
             tk.messagebox.showerror('Error', self.last_error)
             self.last_error = None
+            self.on_close()
 
         # self.state_update()
 

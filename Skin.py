@@ -535,7 +535,10 @@ class LoadResults:
 def loadAllSkinsFromParentFolder(path):
     skins = LoadResults()
 
-    for skindir in os.listdir(path):
+    path_lst = os.listdir(path)
+    path_lst = sorted(path_lst, key=str.lower)
+
+    for skindir in path_lst:
         if skindir == '.' or skindir == '..':
             continue
         try:
