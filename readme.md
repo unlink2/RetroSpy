@@ -5,7 +5,7 @@
 This is a port of [NintendoSpy](https://github.com/jaburns/NintendoSpy) to make it multiplatform.
 
 The goal of this project is to maintain compatability with the original Application.
-It also implements an experimental Sega MegaDrive (Genesis) 3 button controller mode.
+It also implements an experimental Sega MegaDrive (Genesis) 3 button and 6 button controller mode.
 
 Current implementation status:
 
@@ -30,7 +30,7 @@ It depends on python 3.X and the following libraries
 
 New skin tag:
 Buttons can have an onkeydown attribute with a key combination.
-If you run this script as root, or are using windows, it will then send the specified key to the OS as a keyboard input.
+If you run this script as root, or if you are using windows, it will then send the specified key to the OS as a keyboard input.
 
 Every button tag can also include an action attribute. If action is set to a plugin's name the plugin's on_action method will be called.
 
